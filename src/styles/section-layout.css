@@ -1,0 +1,50 @@
+:root {
+  --section-inline: 5rem;
+  --section-block: 8rem;
+  --section-eyebrow-size: 0.78rem;
+  --section-eyebrow-tracking: 0.22em;
+  /* --section-title-size: clamp(3.2rem, 5.2vw, 5.6rem); */
+  --section-title-size: 4rem;
+  --section-title-line: 0.96;
+  --section-subtitle-size: 1.9rem;
+  --section-subtitle-line: 1.18;
+  --section-body-size: 1rem;
+  --section-body-line: 1.75;
+}
+
+.sectionShell {
+  padding: var(--section-block) var(--section-inline);
+}
+
+.sectionInner {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.sectionEyebrow {
+  display: block;
+  margin-bottom: 1.25rem;
+  font-size: var(--section-eyebrow-size);
+  line-height: 1.2;
+  letter-spacing: var(--section-eyebrow-tracking);
+  text-transform: uppercase;
+}
+
+.sectionTitle {
+  font-size: var(--section-title-size);
+  line-height: var(--section-title-line);
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+
+.sectionSubtitle {
+  font-size: var(--section-subtitle-size);
+  line-height: var(--section-subtitle-line);
+  font-weight: 500;
+}
+
+.sectionBody {
+  font-size: var(--section-body-size);
+  line-height: var(--section-body-line);
+}

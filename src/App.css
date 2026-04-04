@@ -1,0 +1,181 @@
+@import "tailwindcss";
+@import "./styles/section-layout.css";
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #072c3f;
+}
+
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero__videoOverlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(5, 16, 24, 0.28), rgba(5, 16, 24, 0.08)),
+    linear-gradient(
+      to right,
+      rgba(5, 16, 24, 0.18),
+      transparent 35%,
+      rgba(5, 16, 24, 0.14)
+    );
+  pointer-events: none;
+}
+
+.hero__ui {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  color: white;
+  padding: 0 48px;
+}
+
+.hero__headlineBlock {
+  position: absolute;
+  left: var(--section-inline);
+  bottom: var(--section-block);
+  max-width: 680px;
+}
+
+.hero__eyebrow {
+  display: block;
+  font-size: var(--section-eyebrow-size);
+  font-weight: 500;
+  letter-spacing: var(--section-eyebrow-tracking);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 18px;
+}
+
+.hero__headlineBlock h1 {
+  font-size: var(--section-title-size);
+  line-height: var(--section-title-line);
+  letter-spacing: -0.04em;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 36px;
+}
+
+.hero__investors {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hero__investorsLabel {
+  font-size: var(--section-eyebrow-size);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.hero__logos {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.hero__logos div {
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+
+.hero__sideText {
+  position: absolute;
+  right: var(--section-inline);
+  bottom: var(--section-block);
+  max-width: 360px;
+  text-align: left;
+  color: #fff;
+}
+
+.hero__sideText p {
+  font-size: var(--section-body-size);
+  line-height: var(--section-body-line);
+  margin-bottom: 28px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.hero__scrollHint {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.hero__scrollLine {
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.heroScene {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.heroScene__rope {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.heroScene__ship {
+  position: absolute;
+  width: 56px;
+  height: 120px;
+  transform: translate(-50%, -50%);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ececec 0%, #cfcfcf 100%);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  overflow: visible;
+}
+
+.heroScene__shipDeck {
+  position: absolute;
+  inset: 14px 9px;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    #d96f4a 0 33%,
+    #3d6da8 33% 66%,
+    #d7d7d7 66% 100%
+  );
+}
+
+.heroScene__wake {
+  position: absolute;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  filter: blur(1px);
+}
+
+.heroScene__wake-particle {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8); /* Crisp white water */
+  border-radius: 50%; /* Start as a circle */
+
+  /* The Secret Sauce: add a slight border for that "inked" look */
+  border: 2px solid rgba(173, 216, 230, 0.5);
+
+  /* Optional: make it an oval to simulate movement direction */
+  border-bottom-right-radius: 20%;
+  pointer-events: none;
+}

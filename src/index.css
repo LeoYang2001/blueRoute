@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+html,
+body {
+  background: #000;
+  overscroll-behavior: none;
+}
+
+#root {
+  width: 100vw;
+  min-height: 100vh;
+}

@@ -1,0 +1,149 @@
+.navbarShell {
+  position: fixed;
+  top: 22px;
+  left: 50%;
+  z-index: 50;
+  transform: translateX(-50%);
+  transition:
+    width 520ms ease,
+    transform 520ms ease;
+}
+
+.navbarPanel {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 64px;
+  padding: 12px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(4, 20, 29, 0.65);
+  backdrop-filter: blur(2px);
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+  transition:
+    padding 520ms ease,
+    gap 520ms ease,
+    background 520ms ease,
+    border-color 520ms ease,
+    box-shadow 520ms ease,
+    max-width 520ms ease;
+}
+
+.navbarCompactTrigger {
+  display: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.navbarCompactTrigger span {
+  width: 14px;
+  height: 1.5px;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.branding {
+  font-weight: 400;
+  color: #fff;
+  font-size: 20px;
+  white-space: nowrap;
+  transition:
+    opacity 460ms ease,
+    transform 460ms ease;
+}
+
+.main-nav {
+  display: flex;
+  gap: 18px;
+  flex: 1;
+  justify-content: center;
+  transition:
+    opacity 460ms ease,
+    transform 460ms ease;
+}
+
+.main-nav a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.main-nav a:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.main-nav a.active {
+  color: #ff6b35;
+  font-weight: 600;
+}
+
+.navbarContactButton {
+  background: #ff6b35;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    opacity 460ms ease,
+    transform 460ms ease,
+    background 300ms ease;
+}
+
+.navbarContactButton:hover {
+  background: #ff7a4a;
+}
+
+.navbarShell--collapsed .navbarPanel {
+  gap: 0;
+  padding: 10px;
+  max-width: 58px;
+}
+
+.navbarShell--collapsed .navbarCompactTrigger {
+  display: inline-flex;
+}
+
+.navbarShell--collapsed .branding,
+.navbarShell--collapsed .main-nav,
+.navbarShell--collapsed .navbarContactButton {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(12px);
+}
+
+.navbarShell--collapsed:hover .navbarPanel,
+.navbarShell--collapsed:focus-within .navbarPanel {
+  gap: 20px;
+  padding: 12px 18px;
+  max-width: 1200px;
+}
+
+.navbarShell--collapsed:hover .branding,
+.navbarShell--collapsed:hover .main-nav,
+.navbarShell--collapsed:hover .navbarContactButton,
+.navbarShell--collapsed:focus-within .branding,
+.navbarShell--collapsed:focus-within .main-nav,
+.navbarShell--collapsed:focus-within .navbarContactButton {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.navbarShell--collapsed:hover .navbarCompactTrigger,
+.navbarShell--collapsed:focus-within .navbarCompactTrigger {
+  display: none;
+}
