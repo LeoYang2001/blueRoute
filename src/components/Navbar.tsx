@@ -28,10 +28,16 @@ export default function Navbar({ isCollapsed = false }: NavbarProps) {
             Home
           </NavLink>
           <NavLink
-            to="/about"
+            to="/fleet-info"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
-            About us
+            Fleet Info
+          </NavLink>
+          <NavLink
+            to="/business"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Business
           </NavLink>
           <NavLink
             to="/technology"
@@ -44,12 +50,6 @@ export default function Navbar({ isCollapsed = false }: NavbarProps) {
             className={({ isActive }) => (isActive ? "active" : "")}
           >
             Career
-          </NavLink>
-          <NavLink
-            to="/news"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            News & Media
           </NavLink>
         </nav>
 

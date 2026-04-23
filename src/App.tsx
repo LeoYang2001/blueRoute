@@ -1,13 +1,13 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Technology from "./pages/Technology";
 import Career from "./pages/Career";
-import News from "./pages/News";
 import Contact from "./pages/Contact";
 import { DelayedRoutes } from "./pages/DelayedRoutes";
+import FleetInfo from "./pages/FleetInfo";
+import Business from "./pages/Business";
 
 function App() {
   return (
@@ -15,10 +15,12 @@ function App() {
       <div className="w-full">
         <DelayedRoutes>
           <Route path="/" element={<Home />} />
+          <Route path="/fleet-info" element={<FleetInfo />} />
+          <Route path="/business" element={<Business />} />
+
           <Route path="/about" element={<About />} />
           <Route path="/technology" element={<Technology />} />
           <Route path="/career" element={<Career />} />
-          <Route path="/news" element={<News />} />
           <Route path="/contact" element={<Contact />} />
         </DelayedRoutes>
       </div>

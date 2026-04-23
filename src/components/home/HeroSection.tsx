@@ -11,7 +11,7 @@ import {
 } from "framer-motion";
 
 export default function HeroSection() {
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const [isNavbarCollapsed, setIsNavbarCollapsed] = useState(false);
 
   const { scrollYProgress } = useScroll({
@@ -23,10 +23,9 @@ export default function HeroSection() {
   const textShiftY = useTransform(scrollYProgress, [0, 0.8, 1], [0, 50, 120]);
   const yHeadline = useTransform(scrollYProgress, [0, 1], [50, -50]);
 
-  // Per-element parallax — each layer drifts at a different rate
   const yEyebrow = useTransform(scrollYProgress, [0, 1], [30, -20]);
   const yH1 = useTransform(scrollYProgress, [0, 1], [60, -80]);
-  const yInvestors = useTransform(scrollYProgress, [0, 1], [90, -110]);
+  const yStats = useTransform(scrollYProgress, [0, 1], [90, -110]);
   const ySideText = useTransform(scrollYProgress, [0, 1], [40, -30]);
   const ySideHint = useTransform(scrollYProgress, [0, 1], [20, -10]);
 
@@ -38,7 +37,6 @@ export default function HeroSection() {
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     setIsNavbarCollapsed(latest > 0.57);
-    console.log("scrollYProgress:", latest);
   });
 
   return (
@@ -71,33 +69,39 @@ export default function HeroSection() {
           style={{ y: yHeadline }}
         >
           <motion.span className="hero__eyebrow" style={{ y: yEyebrow }}>
-            Zero Emission · Ocean Transport
+            Global Maritime Transport · Oil · Chemical · Bulk Cargo
           </motion.span>
+
           <motion.h1 style={{ y: yH1 }}>
-            Low Emission
+            Advancing
             <br />
-            Ocean
+            Global Maritime
             <br />
             Transportation
           </motion.h1>
-          <motion.div className="hero__investors" style={{ y: yInvestors }}>
+
+          <motion.div className="hero__investors" style={{ y: yStats }}>
             <span className="hero__investorsLabel">
-              Backed by top-tier investors
+              A fast-growing international shipping group
             </span>
+
             <div className="hero__logos">
-              <div>SOSV</div>
-              <div>FTTF</div>
-              <div>Logo 3</div>
+              <div>20 Vessels</div>
+              <div>3.3M DWT</div>
+              <div>Global Routes</div>
             </div>
           </motion.div>
         </motion.div>
 
-        {/* bottom-right: tagline + scroll hint */}
+        {/* bottom-right: company message + scroll hint */}
         <div className="hero__sideText pointer-events-auto">
           <motion.p style={{ y: ySideText }}>
-            We develop a novel ship to transport freight more flexibly, with
-            lower emissions and at lower costs than today.
+            BlueRoute is building a world-class maritime platform focused on
+            oil, gas, chemical, LNG, and bulk cargo transportation, supported by
+            fleet expansion, shipbuilding innovation, and responsible operations
+            across global trade routes.
           </motion.p>
+
           <motion.div className="hero__scrollHint" style={{ y: ySideHint }}>
             <span className="hero__scrollLine" />
             <span>Scroll to discover</span>

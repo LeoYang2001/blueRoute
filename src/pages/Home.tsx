@@ -1,6 +1,6 @@
 import AboutSection from "../components/home/AboutSection";
 import HeroSection from "../components/home/HeroSection";
-import ProblemSection from "../components/home/ProblemSection";
+import ProblemSection from "../components/home/BusinessSection";
 
 export default function Home() {
   return (
@@ -16,7 +16,7 @@ export default function Home() {
       <section
         style={{
           width: "100vw",
-          height: "120vh",
+          height: "150vh",
         }}
       >
         <AboutSection />
