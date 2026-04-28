@@ -22,6 +22,10 @@ export function DelayedRoutes({ children }: { children: React.ReactNode }) {
       setIsTransitioning(true);
       const timer_1 = setTimeout(() => {
         setDisplayLocation(location);
+        // Reset scroll to top when the displayed route changes
+        if (typeof window !== "undefined" && window.scrollTo) {
+          window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+        }
       }, ROUTE_SWITCH_DELAY_MS);
       const timer_2 = setTimeout(() => {
         setIsTransitioning(false);

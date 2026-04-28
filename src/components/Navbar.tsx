@@ -1,11 +1,14 @@
 import { NavLink } from "react-router-dom";
-import "./Navbar.css";
+import "../css/Navbar.css";
+import { useContact } from "./ContactContext";
 
 type NavbarProps = {
   isCollapsed?: boolean;
+  onContactOpen?: () => void;
 };
 
 export default function Navbar({ isCollapsed = false }: NavbarProps) {
+  const openContact = useContact();
   return (
     <header
       className={`navbarShell  ${isCollapsed ? "navbarShell--collapsed" : ""}`}
@@ -40,22 +43,16 @@ export default function Navbar({ isCollapsed = false }: NavbarProps) {
             Business
           </NavLink>
           <NavLink
-            to="/technology"
+            to="/safety-sustainability"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
-            Technology
-          </NavLink>
-          <NavLink
-            to="/career"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Career
+            Safety & Sustainability
           </NavLink>
         </nav>
 
-        <NavLink to="/contact" className="navbarContactButton">
+        <button className="navbarContactButton" onClick={openContact}>
           Get in touch
-        </NavLink>
+        </button>
       </div>
     </header>
   );

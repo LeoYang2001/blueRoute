@@ -1,0 +1,362 @@
+.fleetPage {
+  width: 100%;
+  background: #031722;
+}
+
+.fleetSection {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8rem 5rem;
+  box-sizing: border-box;
+}
+
+.fleetSection__inner {
+  width: min(1200px, 100%);
+}
+
+.fleetSection__eyebrow {
+  margin: 0 0 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.fleetSection h1,
+.fleetSection h2 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(3rem, 5.2vw, 5.6rem);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  max-width: 980px;
+}
+
+.fleetSection--expansion {
+  background: #f8f9fa;
+}
+
+.fleetSection--expansion .fleetSection__eyebrow,
+.fleetSection--expansion h1,
+.fleetSection--expansion h2,
+.fleetSection--expansion p {
+  color: rgba(15, 23, 42, 0.92);
+}
+
+.fleetSection--modernization {
+  background: #0b1722;
+  align-items: flex-start;
+  padding-top: 9rem;
+  padding-bottom: 9rem;
+}
+
+.fleetSection--modernization .fleetSection__eyebrow,
+.fleetSection--modernization h1,
+.fleetSection--modernization h2,
+.fleetSection--modernization p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ── Safety governance section ── */
+
+.safetyGovSection {
+  background: #eeeeef;
+  padding: 11rem 5rem 9rem;
+  box-sizing: border-box;
+}
+
+.safetyGovSection__inner {
+  width: min(860px, 100%);
+  margin: 0 auto;
+}
+
+.safetyGovSection__eyebrow {
+  margin: 0 0 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: rgba(17, 19, 24, 0.42);
+}
+
+.safetyGovSection__title {
+  margin: 0 0 5rem;
+  color: #111318;
+  font-size: clamp(3rem, 6.5vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.safetyGovSection__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2.8rem;
+}
+
+.safetyGovSection__lead,
+.safetyGovSection__body {
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.22;
+}
+
+.safetyGovSection__lead {
+  font-size: clamp(2rem, 4.2vw, 4rem);
+  font-weight: 530;
+}
+
+.safetyGovSection__body {
+  font-size: clamp(1.65rem, 3.2vw, 3rem);
+  font-weight: 420;
+}
+
+.safetyGovWord {
+  display: inline;
+}
+
+.safetyGovSection__cards {
+  margin-top: 5rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.safetyGovSection__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 1.6rem 1.5rem 1.75rem;
+  background: #fff;
+  border: 1px solid rgba(17, 19, 24, 0.1);
+  border-top: 2.5px solid rgba(17, 19, 24, 0.75);
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.safetyGovSection__card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(17, 19, 24, 0.08);
+}
+
+.safetyGovSection__cardIndex {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(17, 19, 24, 0.35);
+  font-weight: 500;
+}
+
+.safetyGovSection__cardTitle {
+  margin: 0;
+  color: #111318;
+  font-size: 1.02rem;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.safetyGovSection__cardBody {
+  margin: 0;
+  color: rgba(17, 19, 24, 0.58);
+  font-size: 0.88rem;
+  line-height: 1.62;
+}
+
+@media (max-width: 920px) {
+  .safetyGovSection {
+    padding-inline: 1.6rem;
+  }
+
+  .safetyGovSection__cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Safety performance section ── */
+
+.safetyPerfSection {
+  background: #f5f4f0;
+  padding: 11rem 5rem 10rem;
+  box-sizing: border-box;
+}
+
+.safetyPerfSection__inner {
+  width: min(860px, 100%);
+  margin: 0 auto;
+}
+
+.safetyPerfSection__eyebrow {
+  margin: 0 0 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: rgba(17, 19, 24, 0.42);
+}
+
+.safetyPerfSection__title {
+  margin: 0 0 6rem;
+  color: #111318;
+  font-size: clamp(3rem, 6.5vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.safetyPerfSection__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(17, 19, 24, 0.12);
+  border: 1px solid rgba(17, 19, 24, 0.12);
+  margin-bottom: 7rem;
+}
+
+.safetyPerfSection__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 3rem 2.2rem 3.2rem;
+  background: #f5f4f0;
+}
+
+.safetyPerfSection__statValue {
+  font-size: clamp(5rem, 13vw, 11rem);
+  line-height: 1;
+  letter-spacing: -0.06em;
+  font-weight: 600;
+  color: #111318;
+  display: block;
+}
+
+.safetyPerfSection__statLabel {
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(17, 19, 24, 0.42);
+  font-weight: 500;
+  display: block;
+}
+
+.safetyPerfSection__body {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.8vw, 2.6rem);
+  line-height: 1.24;
+  letter-spacing: -0.02em;
+  font-weight: 420;
+}
+
+.safetyPerfWord {
+  display: inline;
+}
+
+@media (max-width: 920px) {
+  .safetyPerfSection {
+    padding-inline: 1.6rem;
+  }
+
+  .safetyPerfSection__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .safetyPerfSection__stat {
+    padding: 2.2rem 1.5rem;
+  }
+}
+
+/* ── Environmental stewardship section ── */
+
+.safetyEnvSection {
+  background: #eeeeef;
+  padding: 11rem 5rem 10rem;
+  box-sizing: border-box;
+}
+
+.safetyEnvSection__inner {
+  width: min(860px, 100%);
+  margin: 0 auto;
+}
+
+.safetyEnvSection__eyebrow {
+  margin: 0 0 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: rgba(17, 19, 24, 0.42);
+}
+
+.safetyEnvSection__title {
+  margin: 0 0 2rem;
+  color: #111318;
+  font-size: clamp(3rem, 6.5vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.safetyEnvSection__intro {
+  margin: 0 0 5rem;
+  color: rgba(17, 19, 24, 0.64);
+  font-size: 1.06rem;
+  line-height: 1.66;
+  max-width: 68ch;
+}
+
+.safetyEnvSection__pillars {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.safetyEnvSection__pillar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 1.6rem 1.5rem 1.75rem;
+  background: #fff;
+  border: 1px solid rgba(17, 19, 24, 0.1);
+  border-top: 2.5px solid #ff6b35;
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.safetyEnvSection__pillar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(17, 19, 24, 0.08);
+}
+
+.safetyEnvSection__pillarIndex {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 107, 53, 0.7);
+  font-weight: 500;
+}
+
+.safetyEnvSection__pillarTitle {
+  margin: 0;
+  color: #111318;
+  font-size: 1.02rem;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.safetyEnvSection__pillarBody {
+  margin: 0;
+  color: rgba(17, 19, 24, 0.58);
+  font-size: 0.88rem;
+  line-height: 1.62;
+}
+
+@media (max-width: 920px) {
+  .safetyEnvSection {
+    padding-inline: 1.6rem;
+  }
+
+  .safetyEnvSection__pillars {
+    grid-template-columns: 1fr;
+  }
+}

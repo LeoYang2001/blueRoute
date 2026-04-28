@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import FleetOverviewSection from "../components/fleetinfo/FleetOverviewSection";
-import FleetExpansionSection from "../components/fleetinfo/FleetExpansionSection";
-import FleetModernizationSection from "../components/fleetinfo/FleetModernizationSection";
-import "../css/FleetInfo.css";
+import SafetyGovernance from "../components/safety/SafetyGovernance";
+import SafetyPerformanceReliability from "../components/safety/SafetyPerformanceReliability";
+import EnvironmentalStewardship from "../components/safety/EnvironmentalStewardship";
+import "../css/SafetySustainability.css";
 
-export default function FleetInfo() {
+export default function SafetySustainability() {
   const [isNavbarCollapsed, setIsNavbarCollapsed] = useState(false);
 
   useEffect(() => {
@@ -23,9 +23,9 @@ export default function FleetInfo() {
     <main className="fleetPage">
       <Navbar isCollapsed={isNavbarCollapsed} />
 
-      <FleetOverviewSection />
-      <FleetExpansionSection />
-      <FleetModernizationSection />
+      <SafetyGovernance />
+      <SafetyPerformanceReliability />
+      <EnvironmentalStewardship />
     </main>
   );
 }

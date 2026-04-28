@@ -1,5 +1,5 @@
 import HeroScene from "./HeroScene";
-import "../../App.css";
+import "../../css/App.css";
 import Navbar from "../Navbar";
 import heroVideo from "../../assets/video.mp4";
 import { useState, useRef } from "react";

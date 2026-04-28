@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Kite3D from "./Kite3D";
 import { KITE_STRING_ANCHOR_OFFSET } from "./Kite3D";
-import "../../App.css";
+import "../../css/App.css";
 import Ship2D from "./Ship2D";
 
 type WakeParticle = {
