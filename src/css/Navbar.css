@@ -60,13 +60,22 @@
 }
 
 .branding {
-  font-weight: 400;
-  color: #fff;
-  font-size: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 106px;
+  height: 34px;
   white-space: nowrap;
   transition:
     opacity 460ms ease,
     transform 460ms ease;
+}
+
+.branding .navbarBrandLogo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .main-nav {

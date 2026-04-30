@@ -1,0 +1,44 @@
+.brandLogoScene {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 2.5rem;
+  box-sizing: border-box;
+}
+
+.brandLogoScene--backdrop {
+  background: #000;
+  min-height: 420px;
+}
+
+.brandLogoMark {
+  width: min(280px, 62vw);
+  height: auto;
+  position: relative;
+  transform-origin: center;
+  overflow: hidden;
+}
+
+.brandLogoMark__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+}
+
+.brandLogoMark__gloss {
+  position: absolute;
+  top: -18%;
+  bottom: -18%;
+  left: -12%;
+  width: 28%;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 10%,
+    rgba(255, 255, 255, 0.5) 45%,
+    rgba(255, 255, 255, 0) 85%
+  );
+  transform: skewX(-14deg);
+}

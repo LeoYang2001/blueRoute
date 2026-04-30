@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import "../css/Navbar.css";
 import { useContact } from "./ContactContext";
+import AnimatedBrandLogo from "./brand/AnimatedBrandLogo";
 
 type NavbarProps = {
   isCollapsed?: boolean;
@@ -20,7 +21,13 @@ export default function Navbar({ isCollapsed = false }: NavbarProps) {
           <span></span>
         </div>
 
-        <div className="branding">BlueRoute</div>
+        <div className="w-full h-full" aria-label="BlueRoute logo">
+          <img
+            className="  scale-170"
+            src="/logo/logo.png"
+            alt="BlueRoute logo"
+          />
+        </div>
 
         <nav className="main-nav">
           <NavLink

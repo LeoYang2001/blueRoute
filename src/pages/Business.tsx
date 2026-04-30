@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import CoreBusinessOverview from "../components/business/CoreBusinessOverview";
 import ShippingServices from "../components/business/ShippingServices";
+import BusinessParallaxShowcase from "../components/business/BusinessParallaxShowcase";
 import IntegratedCapabilities from "../components/business/IntegratedCapabilities";
 
 export default function Business() {
@@ -24,6 +25,7 @@ export default function Business() {
 
       <CoreBusinessOverview />
       <ShippingServices />
+      <BusinessParallaxShowcase />
       <IntegratedCapabilities />
     </main>
   );
