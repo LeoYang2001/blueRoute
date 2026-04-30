@@ -22,7 +22,13 @@ export default function FleetOverviewSection() {
             transition={{ duration: 0.65 }}
           >
             <p className="fleetSection__eyebrow">Fleet Overview</p>
-            <h1>Modern Fleet, Global Reach</h1>
+            <h1
+              style={{
+                color: "#090b12",
+              }}
+            >
+              Modern Fleet, Global Reach
+            </h1>
           </motion.div>
 
           <motion.p
