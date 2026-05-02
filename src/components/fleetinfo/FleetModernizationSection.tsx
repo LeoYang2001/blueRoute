@@ -75,7 +75,7 @@ export default function FleetModernizationSection() {
             {...fadeUp(DELAY + 0.1)}
           >
             <img
-              src="/pictures/ship_6.png"
+              src="/pictures/ship_4.png"
               alt="Tian Shu Xing chemical tanker"
             />
             <motion.span
