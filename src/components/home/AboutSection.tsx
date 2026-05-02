@@ -79,10 +79,6 @@ export default function AboutSection() {
             efficient global transportation solutions while strengthening its
             presence across major international trade routes.
           </p>
-
-          <button className="w-fit text-sky-700 font-medium border-b border-sky-700 pb-1 hover:text-sky-800 transition-colors">
-            More about the company
-          </button>
         </motion.div>
       </div>
 
