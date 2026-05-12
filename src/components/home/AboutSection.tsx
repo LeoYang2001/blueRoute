@@ -40,9 +40,9 @@ export default function AboutSection() {
           className="col-span-4 col-start-9 -mt-20"
         >
           <img
-            src="/pictures/team.png"
+            src="/pictures/ship_3.png"
             alt="Oil tanker at sea"
-            className="w-full h-[520px] object-cover  hover:grayscale-0 transition-all duration-700"
+            className="w-full h-[520px] object-cover   transition-all duration-700"
           />
         </motion.div>
 
@@ -52,7 +52,7 @@ export default function AboutSection() {
         >
           <img
             src="/pictures/factory.png"
-            className="w-full grayscale hover:grayscale-0  h-[380px] object-cover"
+            className="w-full   h-[380px] object-cover"
           />
         </motion.div>
 

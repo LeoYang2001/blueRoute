@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Globe from "react-globe.gl";
 import {
   motion,
@@ -18,7 +18,11 @@ type RegionName =
   | "Middle East"
   | "South America"
   | "South Africa"
-  | "Southeast Asia";
+  | "Southeast Asia"
+  | "India"
+  | "China"
+  | "Singapore"
+  | "Malaysia";
 
 type GeoFeature = {
   properties?: Record<string, unknown>;
@@ -37,7 +41,12 @@ const REGIONS: Array<RegionPoint & { name: RegionName }> = [
   { name: "Middle East", lat: 25.2, lng: 55.27 },
   { name: "South America", lat: -23.55, lng: -46.63 },
   { name: "South Africa", lat: -33.92, lng: 18.42 },
-  { name: "Southeast Asia", lat: 1.29, lng: 103.85 },
+  // Pinned to Jakarta so the label doesn't overlap the new Singapore pin.
+  { name: "Southeast Asia", lat: -6.21, lng: 106.85 },
+  { name: "India", lat: 19.08, lng: 72.88 }, // Mumbai
+  { name: "China", lat: 31.23, lng: 121.47 }, // Shanghai
+  { name: "Singapore", lat: 1.35, lng: 103.82 },
+  { name: "Malaysia", lat: 3.0, lng: 101.4 }, // Port Klang area
 ];
 
 const SUPPORTING_COPY =
@@ -51,7 +60,15 @@ const REGION_BOUNDS: Record<
   "Middle East": { latMin: 12, latMax: 40, lngMin: 32, lngMax: 62 },
   "South America": { latMin: -56, latMax: 13, lngMin: -82, lngMax: -35 },
   "South Africa": { latMin: -36, latMax: -22, lngMin: 16, lngMax: 33 },
-  "Southeast Asia": { latMin: -10, latMax: 24, lngMin: 92, lngMax: 132 },
+  // SE Asia tightened down to Indonesia/Philippines so it doesn't claim
+  // China, India, Malaysia, or Singapore polygons.
+  "Southeast Asia": { latMin: -10, latMax: 8, lngMin: 95, lngMax: 142 },
+  India: { latMin: 8, latMax: 35, lngMin: 68, lngMax: 90 },
+  China: { latMin: 22, latMax: 50, lngMin: 95, lngMax: 135 },
+  // Tiny box around Singapore — Malaysia bounds start above it so the
+  // Singapore polygon only matches one region.
+  Singapore: { latMin: 1, latMax: 1.8, lngMin: 103.5, lngMax: 104.2 },
+  Malaysia: { latMin: 2, latMax: 7, lngMin: 99, lngMax: 119.5 },
 };
 
 function walkCoords(input: unknown, points: Array<[number, number]>) {
@@ -128,7 +145,12 @@ export default function ShippingServices() {
   const globeRef = useRef<any>(null);
   const [globeSize, setGlobeSize] = useState({ width: 520, height: 520 });
   const [worldData, setWorldData] = useState<GeoFeatureCollection | null>(null);
-  const [activeRegion, setActiveRegion] = useState<RegionName>("Europe");
+  // Two-step selection: pick an origin region, then a destination — an animated
+  // arc draws between them. Defaults seed a route so the UI is non-empty on load.
+  const [originRegion, setOriginRegion] = useState<RegionName | null>("Europe");
+  const [destRegion, setDestRegion] = useState<RegionName | null>(
+    "Southeast Asia",
+  );
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -174,28 +196,119 @@ export default function ShippingServices() {
 
   useEffect(() => {
     if (!globeRef.current) return;
-    globeRef.current.pointOfView({ lat: 18, lng: -28, altitude: 1.8 }, 0);
     const controls = globeRef.current.controls();
-    controls.autoRotate = true;
     controls.autoRotateSpeed = 0.42;
     controls.enableZoom = false;
     controls.enableRotate = false;
     controls.enablePan = false;
   }, [worldData]);
 
-  const handleRegionSelect = (region: RegionPoint & { name: RegionName }) => {
-    setActiveRegion(region.name);
+  // Camera / autoRotate behavior is driven by what's selected:
+  //  - both endpoints: frame the midpoint of the great-circle arc
+  //  - only origin: zoom to it
+  //  - nothing: drift back to the default view and resume auto-rotate
+  useEffect(() => {
     if (!globeRef.current) return;
-
     const controls = globeRef.current.controls();
-    controls.autoRotate = false;
-    globeRef.current.pointOfView(
-      { lat: region.lat, lng: region.lng, altitude: 1.5 },
-      1200,
-    );
+
+    if (originRegion && destRegion) {
+      const o = REGIONS.find((r) => r.name === originRegion);
+      const d = REGIONS.find((r) => r.name === destRegion);
+      if (!o || !d) return;
+      const midLat = (o.lat + d.lat) / 2;
+      // Handle dateline wrap so midpoint is on the short arc
+      let lngDiff = d.lng - o.lng;
+      if (lngDiff > 180) lngDiff -= 360;
+      else if (lngDiff < -180) lngDiff += 360;
+      let midLng = o.lng + lngDiff / 2;
+      if (midLng > 180) midLng -= 360;
+      if (midLng < -180) midLng += 360;
+
+      controls.autoRotate = false;
+      globeRef.current.pointOfView(
+        { lat: midLat, lng: midLng, altitude: 2.4 },
+        1500,
+      );
+    } else if (originRegion) {
+      const o = REGIONS.find((r) => r.name === originRegion);
+      if (!o) return;
+      controls.autoRotate = false;
+      globeRef.current.pointOfView(
+        { lat: o.lat, lng: o.lng, altitude: 1.7 },
+        1200,
+      );
+    } else {
+      controls.autoRotate = true;
+      globeRef.current.pointOfView(
+        { lat: 18, lng: -28, altitude: 1.8 },
+        1200,
+      );
+    }
+  }, [originRegion, destRegion, worldData]);
+
+  const handleRegionSelect = (region: RegionPoint & { name: RegionName }) => {
+    // Click flow:
+    //   click current origin       → clear both (full reset)
+    //   click current destination  → clear destination only
+    //   no origin yet              → set as origin
+    //   origin set, no destination → set as destination (draw arc)
+    //   both already set           → start over: clicked region becomes origin
+    if (region.name === originRegion) {
+      setOriginRegion(null);
+      setDestRegion(null);
+      return;
+    }
+    if (region.name === destRegion) {
+      setDestRegion(null);
+      return;
+    }
+    if (!originRegion) {
+      setOriginRegion(region.name);
+      return;
+    }
+    if (!destRegion) {
+      setDestRegion(region.name);
+      return;
+    }
+    setOriginRegion(region.name);
+    setDestRegion(null);
   };
 
-  const activeRegionData = REGIONS.find((r) => r.name === activeRegion);
+  // Arc payload for react-globe.gl's arcsData prop
+  const arcsData = useMemo(() => {
+    if (!originRegion || !destRegion) return [];
+    const o = REGIONS.find((r) => r.name === originRegion);
+    const d = REGIONS.find((r) => r.name === destRegion);
+    if (!o || !d) return [];
+    return [
+      {
+        startLat: o.lat,
+        startLng: o.lng,
+        endLat: d.lat,
+        endLng: d.lng,
+      },
+    ];
+  }, [originRegion, destRegion]);
+
+  // Pulsing rings on whichever endpoints are currently selected
+  const ringsData = useMemo(() => {
+    const arr: Array<RegionPoint & { kind: "origin" | "destination" }> = [];
+    if (originRegion) {
+      const o = REGIONS.find((r) => r.name === originRegion);
+      if (o) arr.push({ ...o, kind: "origin" });
+    }
+    if (destRegion) {
+      const d = REGIONS.find((r) => r.name === destRegion);
+      if (d) arr.push({ ...d, kind: "destination" });
+    }
+    return arr;
+  }, [originRegion, destRegion]);
+
+  const statusText = useMemo(() => {
+    if (!originRegion) return "Tap a region to set an origin";
+    if (!destRegion) return `${originRegion} → tap a destination`;
+    return `${originRegion} → ${destRegion}`;
+  }, [originRegion, destRegion]);
 
   const words = SUPPORTING_COPY.split(" ");
 
@@ -239,28 +352,53 @@ export default function ShippingServices() {
           </p>
 
           <ul className="mt-9 flex flex-wrap gap-2.5">
-            {REGIONS.map((region, i) => (
-              <motion.li
-                key={region.name}
-                className={`list-none cursor-pointer rounded-full border px-4 py-2 text-[0.8rem] font-medium tracking-[0.03em] transition-colors duration-200 ${
-                  activeRegion === region.name
-                    ? "border-[#ff6b35] bg-[#ff6b35] text-white"
-                    : "border-[rgba(15,23,42,0.12)] bg-white text-[rgba(15,23,42,0.72)] hover:border-[rgba(255,107,53,0.45)] hover:text-[rgba(255,107,53,0.95)]"
-                }`}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.7 }}
-                transition={{
-                  duration: 0.38,
-                  ease: "easeOut",
-                  delay: 0.04 * i,
-                }}
-                onClick={() => handleRegionSelect(region)}
-              >
-                {region.name}
-              </motion.li>
-            ))}
+            {REGIONS.map((region, i) => {
+              const isOrigin = originRegion === region.name;
+              const isDest = destRegion === region.name;
+              const stateClass = isOrigin
+                ? "border-[#ff6b35] bg-[#ff6b35] text-white"
+                : isDest
+                  ? "border-[#ff6b35] bg-white text-[#ff6b35]"
+                  : "border-[rgba(15,23,42,0.12)] bg-white text-[rgba(15,23,42,0.72)] hover:border-[rgba(255,107,53,0.45)] hover:text-[rgba(255,107,53,0.95)]";
+              return (
+                <motion.li
+                  key={region.name}
+                  className={`flex list-none cursor-pointer items-center gap-1.5 rounded-full border px-4 py-2 text-[0.8rem] font-medium tracking-[0.03em] transition-colors duration-200 ${stateClass}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{
+                    duration: 0.38,
+                    ease: "easeOut",
+                    delay: 0.04 * i,
+                  }}
+                  onClick={() => handleRegionSelect(region)}
+                >
+                  {isOrigin && (
+                    <span className="text-[0.6rem] uppercase tracking-[0.12em] opacity-85">
+                      From
+                    </span>
+                  )}
+                  {isDest && (
+                    <span className="text-[0.6rem] uppercase tracking-[0.12em] opacity-85">
+                      To
+                    </span>
+                  )}
+                  {region.name}
+                </motion.li>
+              );
+            })}
           </ul>
+
+          <motion.p
+            key={statusText}
+            className="mt-4 text-[0.82rem] text-[rgba(15,23,42,0.55)]"
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+          >
+            {statusText}
+          </motion.p>
         </div>
 
         <div
@@ -280,40 +418,60 @@ export default function ShippingServices() {
                 hexPolygonResolution={3}
                 hexPolygonMargin={0.68}
                 hexPolygonUseDots={true}
-                hexPolygonColor={(feature) =>
-                  isRegionFeature(feature as GeoFeature, activeRegion)
-                    ? "rgba(255, 107, 53, 0.95)"
-                    : "rgba(210, 215, 223, 0.7)"
-                }
+                hexPolygonColor={(feature) => {
+                  const f = feature as GeoFeature;
+                  if (originRegion && isRegionFeature(f, originRegion))
+                    return "rgba(255, 107, 53, 0.95)";
+                  if (destRegion && isRegionFeature(f, destRegion))
+                    return "rgba(255, 107, 53, 0.6)";
+                  return "rgba(210, 215, 223, 0.7)";
+                }}
                 pointsData={REGIONS}
                 pointLat="lat"
                 pointLng="lng"
-                pointColor={(point) =>
-                  (point as RegionPoint).name === activeRegion
-                    ? "#ff6b35"
-                    : "#6f7ca6"
-                }
+                pointColor={(point) => {
+                  const name = (point as RegionPoint).name;
+                  if (name === originRegion || name === destRegion)
+                    return "#ff6b35";
+                  return "#6f7ca6";
+                }}
                 pointAltitude={0.02}
-                pointRadius={0.28}
+                pointRadius={0.32}
                 labelsData={REGIONS}
                 labelLat="lat"
                 labelLng="lng"
                 labelText="name"
                 labelSize={1.05}
                 labelDotRadius={0.32}
-                labelColor={(label) =>
-                  (label as RegionPoint).name === activeRegion
-                    ? "rgba(255,107,53,0.95)"
-                    : "rgba(55,73,128,0.8)"
-                }
+                labelColor={(label) => {
+                  const name = (label as RegionPoint).name;
+                  if (name === originRegion || name === destRegion)
+                    return "rgba(255,107,53,0.95)";
+                  return "rgba(55,73,128,0.8)";
+                }}
                 labelResolution={2}
-                ringsData={activeRegionData ? [activeRegionData] : []}
+                arcsData={arcsData}
+                arcStartLat="startLat"
+                arcStartLng="startLng"
+                arcEndLat="endLat"
+                arcEndLng="endLng"
+                arcColor={() => [
+                  "rgba(255,107,53,0.95)",
+                  "rgba(255,107,53,0.35)",
+                ]}
+                arcStroke={0.55}
+                arcAltitude={0.32}
+                arcDashLength={0.4}
+                arcDashGap={0.15}
+                arcDashAnimateTime={2800}
+                arcsTransitionDuration={1200}
+                ringsData={ringsData}
                 ringLat="lat"
                 ringLng="lng"
-                ringColor={() => ["rgba(255,107,53,0.5)", "rgba(255,107,53,0)"]}
-                ringMaxRadius={7.8}
-                ringPropagationSpeed={1.9}
-                ringRepeatPeriod={860}
+                ringColor={() => ["rgba(255,107,53,0.55)", "rgba(255,107,53,0)"]}
+                ringMaxRadius={6.5}
+                ringPropagationSpeed={1.8}
+                ringRepeatPeriod={900}
                 atmosphereColor="#d7dce3"
                 atmosphereAltitude={0.14}
                 enablePointerInteraction={false}
