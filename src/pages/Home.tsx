@@ -4,29 +4,25 @@ import ProblemSection from "../components/home/BusinessSection";
 
 export default function Home() {
   return (
-    <main className=" ">
-      <section
-        style={{
-          width: "100vw",
-          height: "100vh",
-        }}
-      >
+    // `overflow-x-hidden` on main is a belt-and-braces backup to the same
+    // rule on html/body, in case a parallax / scaled element here tries to
+    // extend the page horizontally.
+    <main className="overflow-x-hidden">
+      {/* Hero keeps its 100vh on every breakpoint (full-bleed video).
+          Using `w-full` instead of `w-screen` so the section can't extend
+          past the body's actual rendered width. */}
+      <section className="w-full h-screen">
         <HeroSection />
       </section>
-      <section
-        style={{
-          width: "100vw",
-          height: "150vh",
-        }}
-      >
+      {/* About + Business previously had hard-coded 150vh / 200vh wrappers,
+          which trapped their mobile-reflowed content inside a viewport-sized
+          frame and produced enormous empty scroll. On mobile they collapse
+          to whatever height the content actually needs; desktop keeps the
+          original tall-section behavior so the parallax has room to play. */}
+      <section className="w-full h-auto md:h-[150vh]">
         <AboutSection />
       </section>
-      <section
-        style={{
-          width: "100vw",
-          height: "200vh",
-        }}
-      >
+      <section className="w-full h-auto md:h-[200vh]">
         <ProblemSection />
       </section>
     </main>

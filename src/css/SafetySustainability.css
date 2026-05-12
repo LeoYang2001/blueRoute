@@ -449,3 +449,89 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Mobile-tight breakpoint (≤768px) ──
+   The existing 920px rules cover tablet sizing. These additions handle
+   true phone widths: shrink heavy vertical padding, drop heading sizes,
+   and reduce safety governance card heights so the grid feels right. */
+@media (max-width: 768px) {
+  .fleetSection {
+    padding: 4rem 1.25rem;
+    min-height: 0;
+  }
+
+  .fleetSection h1,
+  .fleetSection h2 {
+    font-size: clamp(2.1rem, 8vw, 3rem);
+    line-height: 1;
+  }
+
+  .safetyGovSection {
+    padding: 5rem 1.25rem 4rem;
+  }
+
+  .safetyGovSection__title {
+    margin-bottom: 2.5rem;
+  }
+
+  .safetyGovSection__copy {
+    gap: 1.6rem;
+  }
+
+  .safetyGovSection__cards {
+    margin-top: 2.5rem;
+    gap: 0.75rem;
+  }
+
+  .safetyGovSection__card {
+    padding: 1.4rem 1.25rem;
+    min-height: 0;
+  }
+
+  .safetyGovSection__cardIcon {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+
+  .safetyGovSection__cardTitle {
+    font-size: 1.5rem;
+  }
+
+  .safetyPerfSection {
+    padding: 5rem 1.25rem;
+  }
+
+  .safetyPerfSection__title {
+    margin-bottom: 3rem;
+  }
+
+  .safetyPerfSection__stats {
+    margin-bottom: 3rem;
+  }
+
+  .safetyPerfSection__stat {
+    padding: 1.5rem 1.25rem 1.75rem;
+  }
+
+  .safetyPerfSection__statValue {
+    font-size: clamp(3.2rem, 14vw, 5rem);
+  }
+
+  .safetyPerfSection__body {
+    font-size: 1.2rem;
+    line-height: 1.34;
+  }
+
+  .safetyEnvSection {
+    padding: 5rem 1.25rem 4rem;
+  }
+
+  .safetyEnvSection__intro {
+    margin-bottom: 2.5rem;
+    font-size: 0.96rem;
+  }
+
+  .safetyEnvSection__pillar {
+    padding: 1.25rem 1.1rem 1.4rem;
+  }
+}

@@ -143,7 +143,12 @@ export default function ShippingServices() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const globeHostRef = useRef<HTMLDivElement | null>(null);
   const globeRef = useRef<any>(null);
-  const [globeSize, setGlobeSize] = useState({ width: 520, height: 520 });
+  // Initial globe size deliberately small (320px wide) so the Three.js
+  // canvas doesn't briefly render wider than a phone viewport before the
+  // ResizeObserver below adjusts it to the host's actual clientWidth.
+  // Without this, a momentary 520px-wide canvas can push the page wider
+  // than viewport on mobile and cause a horizontal-scroll flash.
+  const [globeSize, setGlobeSize] = useState({ width: 320, height: 320 });
   const [worldData, setWorldData] = useState<GeoFeatureCollection | null>(null);
   // Two-step selection: pick an origin region, then a destination — an animated
   // arc draws between them. Defaults seed a route so the UI is non-empty on load.
@@ -274,6 +279,29 @@ export default function ShippingServices() {
     setDestRegion(null);
   };
 
+  // Used by the mobile-only swap button to flip origin / destination.
+  const swapRoute = () => {
+    if (!originRegion || !destRegion) return;
+    setOriginRegion(destRegion);
+    setDestRegion(originRegion);
+  };
+
+  // Mobile dropdown change handlers. A `<select>` directly assigns the new
+  // value, so we don't need the chip-click cycle logic. If the user picks
+  // the same region for both sides via the dropdown, clear the other side
+  // so we never end up with origin === destination.
+  const handleOriginChange = (value: string) => {
+    const name = (value || null) as RegionName | null;
+    setOriginRegion(name);
+    if (name && name === destRegion) setDestRegion(null);
+  };
+
+  const handleDestChange = (value: string) => {
+    const name = (value || null) as RegionName | null;
+    setDestRegion(name);
+    if (name && name === originRegion) setOriginRegion(null);
+  };
+
   // Arc payload for react-globe.gl's arcsData prop
   const arcsData = useMemo(() => {
     if (!originRegion || !destRegion) return [];
@@ -315,12 +343,32 @@ export default function ShippingServices() {
   return (
     <section
       ref={sectionRef}
-      className="bg-[#f8f9fa] min-h-screen px-6 py-28 md:px-[7vw] md:py-36"
+      className="bg-[#f8f9fa] overflow-x-clip px-5 pt-14 pb-16 md:min-h-screen md:px-[7vw] md:py-36"
     >
-      <div className="mx-auto grid w-full max-w-350 gap-12 md:grid-cols-[0.92fr_1.08fr] md:items-center">
-        <div>
+      {/* Three grid children (Header / Controls / Globe) so we can place them
+          independently. On mobile they stack in DOM order: header → controls
+          → globe (matching the user's "globe under selector" ask). On desktop
+          we use explicit grid-row/grid-col placement to recreate the original
+          two-column layout: header + controls in column 1 (rows 1 and 2),
+          globe spanning both rows in column 2. */}
+      <div className="mx-auto grid w-full max-w-350 grid-cols-1 gap-6 md:grid-cols-[0.92fr_1.08fr] md:items-center md:gap-12">
+        {/* ─── Header (eyebrow + title + paragraph) ─── */}
+        <div className="min-w-0 md:col-start-1 md:row-start-1">
+          {/* Mobile-only chapter index above the eyebrow */}
           <motion.p
-            className="mb-6 text-[0.75rem] uppercase tracking-[0.2em] text-[rgba(15,23,42,0.45)]"
+            className="mb-2 inline-flex items-center gap-2 text-[0.62rem] font-medium uppercase tracking-[0.22em] text-[#ff5c2f] md:hidden"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.55 }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
+          >
+            <span>02</span>
+            <span className="block h-px w-5 bg-[rgba(255,92,47,0.5)]" />
+            <span className="text-[rgba(15,23,42,0.55)]">Reach</span>
+          </motion.p>
+
+          <motion.p
+            className="mb-4 text-[0.7rem] uppercase tracking-[0.2em] text-[rgba(15,23,42,0.45)] md:mb-6 md:text-[0.75rem]"
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.55 }}
@@ -330,7 +378,7 @@ export default function ShippingServices() {
           </motion.p>
 
           <motion.h2
-            className="m-0 max-w-[12.5ch] text-[clamp(2.6rem,5.8vw,5.8rem)] font-[560] leading-[0.94] tracking-[-0.045em] text-[#0d1118]"
+            className="m-0 max-w-[12.5ch] text-[clamp(1.9rem,8.4vw,5.8rem)] font-[560] leading-[1.02] tracking-[-0.04em] text-[#0d1118] md:leading-[0.94] md:tracking-[-0.045em]"
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.45 }}
@@ -339,7 +387,7 @@ export default function ShippingServices() {
             Shipping Services &amp; Market Reach
           </motion.h2>
 
-          <p className="mt-7 max-w-[58ch] text-[1rem] leading-[1.68]">
+          <p className="mt-5 max-w-[58ch] break-words text-[0.94rem] leading-[1.55] md:mt-7 md:text-[1rem] md:leading-[1.68]">
             {words.map((word, i) => (
               <HighlightWord
                 key={`${word}-${i}`}
@@ -350,8 +398,140 @@ export default function ShippingServices() {
               />
             ))}
           </p>
+        </div>
 
-          <ul className="mt-9 flex flex-wrap gap-2.5">
+        {/* ─── Controls (From/To card + chips + status) ─── */}
+        <div className="min-w-0 md:col-start-1 md:row-start-2">
+          {/* Mobile-only From/To dropdown selector.
+              Each side has an invisible native <select> stretched across the
+              cell (absolute inset-0 + opacity-0) — tapping the cell pops the
+              OS-native picker, which is the most usable option on touch
+              devices. The visible UI shows the current selection with a
+              chevron affordance so users know it's interactive. */}
+          <div className="flex items-stretch gap-2 rounded-2xl border border-[rgba(15,23,42,0.08)] bg-white px-3 py-2.5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] md:hidden">
+            {/* From dropdown */}
+            <div className="relative min-w-0 flex-1">
+              <div className="text-[0.6rem] uppercase tracking-[0.15em] text-[rgba(15,23,42,0.42)]">
+                From
+              </div>
+              <div className="mt-0.5 flex items-center gap-1.5">
+                <span
+                  className={`min-w-0 flex-1 truncate text-[0.95rem] font-medium ${
+                    originRegion
+                      ? "text-[#0d1118]"
+                      : "text-[rgba(15,23,42,0.35)]"
+                  }`}
+                >
+                  {originRegion ?? "Select"}
+                </span>
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  className="shrink-0 text-[rgba(15,23,42,0.45)]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M2 4l3 3 3-3" />
+                </svg>
+              </div>
+              <select
+                value={originRegion ?? ""}
+                onChange={(e) => handleOriginChange(e.target.value)}
+                aria-label="Select origin region"
+                className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+              >
+                <option value="">Select</option>
+                {REGIONS.map((r) => (
+                  <option
+                    key={r.name}
+                    value={r.name}
+                    disabled={r.name === destRegion}
+                  >
+                    {r.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Swap */}
+            <button
+              type="button"
+              onClick={swapRoute}
+              disabled={!originRegion || !destRegion}
+              aria-label="Swap origin and destination"
+              className="grid h-9 w-9 shrink-0 self-center place-items-center rounded-full border border-[rgba(15,23,42,0.12)] bg-white text-[#0d1118] transition-opacity duration-200 disabled:opacity-30"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 16 16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 5h10M11 3l2 2-2 2M13 11H3M5 9l-2 2 2 2" />
+              </svg>
+            </button>
+
+            {/* To dropdown — visual mirror of From, chevron on the right of
+                the value still (but right-aligned column overall). */}
+            <div className="relative min-w-0 flex-1">
+              <div className="text-right text-[0.6rem] uppercase tracking-[0.15em] text-[rgba(15,23,42,0.42)]">
+                To
+              </div>
+              <div className="mt-0.5 flex items-center justify-end gap-1.5">
+                <span
+                  className={`min-w-0 truncate text-right text-[0.95rem] font-medium ${
+                    destRegion ? "text-[#0d1118]" : "text-[rgba(15,23,42,0.35)]"
+                  }`}
+                >
+                  {destRegion ?? "Select"}
+                </span>
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  className="shrink-0 text-[rgba(15,23,42,0.45)]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M2 4l3 3 3-3" />
+                </svg>
+              </div>
+              <select
+                value={destRegion ?? ""}
+                onChange={(e) => handleDestChange(e.target.value)}
+                aria-label="Select destination region"
+                className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+              >
+                <option value="">Select</option>
+                {REGIONS.map((r) => (
+                  <option
+                    key={r.name}
+                    value={r.name}
+                    disabled={r.name === originRegion}
+                  >
+                    {r.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Desktop-only chip row. Mobile uses the dropdown selector above
+              instead (native OS picker via hidden <select>). */}
+          <ul className="mt-9 hidden flex-wrap gap-2.5 md:flex">
             {REGIONS.map((region, i) => {
               const isOrigin = originRegion === region.name;
               const isDest = destRegion === region.name;
@@ -363,7 +543,7 @@ export default function ShippingServices() {
               return (
                 <motion.li
                   key={region.name}
-                  className={`flex list-none cursor-pointer items-center gap-1.5 rounded-full border px-4 py-2 text-[0.8rem] font-medium tracking-[0.03em] transition-colors duration-200 ${stateClass}`}
+                  className={`flex shrink-0 list-none cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full border px-4 py-2 text-[0.8rem] font-medium tracking-[0.03em] transition-colors duration-200 ${stateClass}`}
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.7 }}
@@ -390,9 +570,23 @@ export default function ShippingServices() {
             })}
           </ul>
 
+          {/* Mobile-only status line — shows the route in plain text right
+              under the chip row so users know what they've selected without
+              looking back at the From/To card. */}
+          <motion.p
+            key={`mobile-${statusText}`}
+            className="mt-3 text-[0.78rem] text-[rgba(15,23,42,0.55)] md:hidden"
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+          >
+            {statusText}
+          </motion.p>
+
+          {/* Desktop status line. */}
           <motion.p
             key={statusText}
-            className="mt-4 text-[0.82rem] text-[rgba(15,23,42,0.55)]"
+            className="mt-4 hidden text-[0.82rem] text-[rgba(15,23,42,0.55)] md:block"
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
@@ -401,12 +595,24 @@ export default function ShippingServices() {
           </motion.p>
         </div>
 
+        {/* ─── Globe ───
+            Mobile: stacks below the controls (last in DOM order under
+            single-column grid).  Desktop: explicitly placed in column 2,
+            spanning both rows, so the original side-by-side layout is
+            preserved. Reduced mobile height keeps the section compact and
+            also gives the canvas a tighter aspect ratio than the previous
+            empty-looking 344px. */}
         <div
           ref={globeHostRef}
-          className="relative h-110 w-full overflow-visible md:h-150"
+          className="relative h-96 w-full overflow-visible md:h-150 md:col-start-2 md:row-span-2 md:row-start-1"
         >
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="origin-center scale-[1.06]">
+            {/* Mobile scales the globe up considerably (1.5×) — the canvas
+                itself is already viewport-sized, but the rendered globe sphere
+                only takes ~50% of canvas height at the default altitude.
+                Without this scale the globe looked like a tiny coin. Desktop
+                stays at the original 1.06 nudge. */}
+            <div className="origin-center scale-[1.5] md:scale-[1.06]">
               <Globe
                 ref={globeRef}
                 width={globeSize.width}

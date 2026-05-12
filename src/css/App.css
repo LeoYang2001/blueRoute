@@ -179,3 +179,64 @@
   border-bottom-right-radius: 20%;
   pointer-events: none;
 }
+
+/* ── Hero mobile reflow ──
+   The desktop hero has two absolutely-positioned blocks (headline bottom-left,
+   side text bottom-right) that overlap on a phone. On mobile we move them into
+   a single flow column anchored to the bottom of the hero, shrink the type, and
+   hide the decorative "scroll to discover" hint to free up vertical room. */
+@media (max-width: 768px) {
+  .hero__headlineBlock {
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: 5.5rem;
+    max-width: none;
+  }
+
+  .hero__headlineBlock h1 {
+    font-size: clamp(2rem, 9vw, 3rem);
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .hero__eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    margin-bottom: 12px;
+  }
+
+  .hero__logos {
+    gap: 8px;
+  }
+
+  .hero__logos div {
+    padding: 5px 10px;
+    font-size: 0.74rem;
+  }
+
+  .hero__investorsLabel {
+    font-size: 0.62rem;
+  }
+
+  /* Drop the bottom-right side text into a stacked block above the headline
+     — pinning it bottom-right collides with the headline at small widths. */
+  .hero__sideText {
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: auto;
+    top: 6rem;
+    max-width: none;
+  }
+
+  .hero__sideText p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  .hero__scrollHint {
+    display: none;
+  }
+}

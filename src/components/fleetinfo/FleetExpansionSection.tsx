@@ -128,6 +128,12 @@ export default function FleetExpansionSection() {
     setActiveIndex(next);
   });
 
+  // Single render branch — the desktop sticky-scroll markup. Mobile uses
+  // the same JS scroll logic; only the layout proportions, typography, and
+  // spacing are overridden via CSS media queries in FleetInfo.css. This
+  // keeps `scrollYProgress`, `storyTranslateY`, and `activeIndex` working
+  // identically on both breakpoints — the rail grows and dots fill in
+  // response to the same scroll source on mobile and desktop alike.
   return (
     <section ref={sectionRef} className="fleetExpansionSection">
       <div className="fleetExpansionSection__sticky ">

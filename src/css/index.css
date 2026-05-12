@@ -6,7 +6,20 @@ body {
   overscroll-behavior: none;
 }
 
+/* Use `overflow-x: clip` rather than `hidden`. `hidden` creates a new
+   containing block that breaks any `position: sticky` descendant (notably
+   on iOS Safari); `clip` clips overflow without forming a containing block,
+   so sticky timelines/sidebars inside the page work as expected.
+   On html nothing is set — putting either value on html breaks touch
+   scrolling. */
+body {
+  overflow-x: clip;
+}
+
 #root {
-  width: 100vw;
+  /* Use the parent (body) width — `100vw` includes the scrollbar gutter on
+     desktop and can exceed the visible area on mobile when a child element
+     overflows, leaving the black body background showing through. */
+  width: 100%;
   min-height: 100vh;
 }

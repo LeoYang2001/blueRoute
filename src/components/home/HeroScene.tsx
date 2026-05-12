@@ -54,8 +54,18 @@ export default function HeroScene() {
     shipRef.current = { x: centerX, y: centerY };
   };
 
+  // Touch devices and phones lack a meaningful "mouse" — make the kite drift
+  // back and forth on its own instead of chasing the (nonexistent) cursor.
+  const isTouchRef = useRef(
+    typeof window !== "undefined" &&
+      window.matchMedia("(hover: none), (pointer: coarse)").matches,
+  );
+
   useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
+      // Touch devices still emit synthetic mouse events on tap. Ignore them
+      // so the kite stays in self-drift mode.
+      if (isTouchRef.current) return;
       const rect = sceneRef.current?.getBoundingClientRect();
       if (!rect) return;
 
@@ -73,6 +83,11 @@ export default function HeroScene() {
 
     const onResize = () => {
       syncShipCenter();
+      // Re-evaluate touch-ness on resize/rotate so toggling devtools or
+      // rotating an iPad updates the kite behavior live.
+      isTouchRef.current = window.matchMedia(
+        "(hover: none), (pointer: coarse)",
+      ).matches;
     };
 
     window.addEventListener("mousemove", onMouseMove);
@@ -95,8 +110,21 @@ export default function HeroScene() {
       syncShipCenter();
 
       const kite = kiteRef.current;
-      const target = targetRef.current;
       const ship = shipRef.current;
+
+      // On touch devices the kite drives its own target with a slow Lissajous-
+      // style drift anchored to the ship. The X swings further than Y so it
+      // reads as "floating left/right" with a subtle vertical bob.
+      if (isTouchRef.current) {
+        const driftX = Math.sin(now * 0.00045) * 160;
+        const driftY = Math.cos(now * 0.00032) * 32 - 200;
+        targetRef.current = {
+          x: ship.x + driftX,
+          y: ship.y + driftY,
+        };
+      }
+
+      const target = targetRef.current;
 
       kite.x = lerp(kite.x, target.x, 0.08);
       kite.y = lerp(kite.y, target.y, 0.08);

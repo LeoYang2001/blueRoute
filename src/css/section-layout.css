@@ -48,3 +48,22 @@
   font-size: var(--section-body-size);
   line-height: var(--section-body-line);
 }
+
+/* Mobile cascade — these variables feed almost every section in the app,
+   so shrinking them once here reflows hero/about/business/fleet/safety
+   sections without per-component edits. Tightened padding and smaller
+   typography make long-form content readable on a phone. */
+@media (max-width: 768px) {
+  :root {
+    --section-inline: 1.25rem;
+    --section-block: 4rem;
+    --section-eyebrow-size: 0.7rem;
+    --section-eyebrow-tracking: 0.18em;
+    --section-title-size: clamp(2.1rem, 8vw, 3rem);
+    --section-title-line: 1;
+    --section-subtitle-size: 1.3rem;
+    --section-subtitle-line: 1.28;
+    --section-body-size: 0.96rem;
+    --section-body-line: 1.6;
+  }
+}

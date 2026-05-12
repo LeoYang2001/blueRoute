@@ -179,3 +179,267 @@
   transform: scale(0.8);
   pointer-events: none;
 }
+
+/* ───────── Mobile navbar ─────────
+   The desktop pill is hidden below 768px, replaced by a slim header bar
+   with a logo + hamburger button. Tapping the hamburger opens a full-
+   screen drawer with nav links and the contact CTA.
+   Both pieces of mobile markup default to display: none so they don't
+   leak into the desktop document flow — the rules inside the media
+   query below switch them on for phone viewports only. */
+.navbarMobile,
+.navbarMobileDrawer {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Hide the desktop pill on phones */
+  .navbarShell {
+    display: none;
+  }
+
+  .navbarMobile {
+    display: block;
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    /* Bumped high so the floating navbar wins over any sticky/parallax
+       stacking context inside page sections (e.g. CoreBusinessOverview's
+       sticky scene with z-30 ship images). */
+    z-index: 100;
+  }
+
+  .navbarMobile__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px 8px 14px;
+    /* Transparent bar — the logo and toggle button float on top of the page
+       content. The toggle button still has its own background so it stays
+       visible against both dark and light page sections. */
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .navbarMobile__brand {
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+  }
+
+  .navbarMobile__brand img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  .navbarMobile__toggle {
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    /* Standalone pill background — darker translucent so it stays visible
+       against both the dark hero video and the light interior pages. */
+    background: rgba(15, 23, 42, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(6px);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 0;
+    transition: background 200ms ease;
+  }
+
+  .navbarMobile__toggle:hover,
+  .navbarMobile__toggle:active {
+    background: rgba(15, 23, 42, 0.72);
+  }
+
+  .navbarMobile__toggle span {
+    display: block;
+    width: 16px;
+    height: 1.6px;
+    background: #fff;
+    border-radius: 999px;
+    transition: transform 240ms ease, opacity 200ms ease;
+  }
+
+  /* Animate hamburger into an "X" when open */
+  .navbarMobile__toggle.is-open span:nth-child(1) {
+    transform: translateY(5.6px) rotate(45deg);
+  }
+  .navbarMobile__toggle.is-open span:nth-child(2) {
+    opacity: 0;
+  }
+  .navbarMobile__toggle.is-open span:nth-child(3) {
+    transform: translateY(-5.6px) rotate(-45deg);
+  }
+
+  /* Drawer — full-viewport overlay with a 3×3 nav grid + bottom CTA.
+     z-index sits above the navbarMobile pill so the drawer fully covers it,
+     and the drawer renders its own X close button instead of relying on the
+     pill's hamburger. */
+  .navbarMobileDrawer {
+    position: fixed;
+    inset: 0;
+    /* Sits above the navbar pill so the drawer fully covers it when open. */
+    z-index: 105;
+    background: #1f2024;
+    padding: 14px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity 260ms ease, transform 260ms ease;
+  }
+
+  .navbarMobileDrawer.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  /* Close X — anchored to the top-right empty cell so it visually sits where
+     the user expects from the reference design. */
+  .navbarMobileDrawer__close {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    z-index: 2;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.92);
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 180ms ease;
+  }
+
+  .navbarMobileDrawer__close:hover,
+  .navbarMobileDrawer__close:active {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* 3×3 grid — each cell is a square. Filled cells (NavLinks) have a faint
+     dark surface and bottom-left label; empty cells are transparent and just
+     hold space to create the checkerboard rhythm. */
+  .navbarMobileDrawer__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 0;
+  }
+
+  .navbarMobileDrawer__cell {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    aspect-ratio: 1 / 1;
+    padding: 14px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    background: rgba(255, 255, 255, 0.06);
+    transition: background 200ms ease, color 200ms ease, transform 200ms ease;
+    overflow: hidden;
+  }
+
+  .navbarMobileDrawer__cell span {
+    display: block;
+  }
+
+  .navbarMobileDrawer__cell:hover,
+  .navbarMobileDrawer__cell:active {
+    background: rgba(255, 255, 255, 0.11);
+  }
+
+  .navbarMobileDrawer__cell.is-active {
+    background: #ff5d2f;
+    color: #fff;
+  }
+
+  .navbarMobileDrawer__cell.is-active:hover,
+  .navbarMobileDrawer__cell.is-active:active {
+    background: #ff6b3f;
+  }
+
+  /* Empty grid slot — invisible, just reserves space. */
+  .navbarMobileDrawer__cell--empty {
+    background: transparent;
+    pointer-events: none;
+  }
+
+  /* "Safety & Sustainability" needs two lines because it's a long label, so
+     bump the line-height a touch and shrink the font slightly to fit. */
+  .navbarMobileDrawer__cell--wide {
+    font-size: 0.98rem;
+    line-height: 1.18;
+  }
+
+  /* Staggered entry animation — cells fade in with a tiny up-slide as the
+     drawer opens, with each row delayed slightly for visual rhythm. */
+  .navbarMobileDrawer__cell {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .navbarMobileDrawer.is-open .navbarMobileDrawer__cell {
+    animation: navbarCellIn 360ms ease forwards;
+  }
+
+  .navbarMobileDrawer.is-open .navbarMobileDrawer__cell:nth-child(-n + 3) {
+    animation-delay: 80ms;
+  }
+  .navbarMobileDrawer.is-open .navbarMobileDrawer__cell:nth-child(n + 4):nth-child(-n + 6) {
+    animation-delay: 160ms;
+  }
+  .navbarMobileDrawer.is-open .navbarMobileDrawer__cell:nth-child(n + 7) {
+    animation-delay: 240ms;
+  }
+
+  @keyframes navbarCellIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Get in touch — pinned to the bottom, full-width, orange, with an arrow. */
+  .navbarMobileDrawer__cta {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ff5d2f;
+    color: #fff;
+    padding: 22px 22px;
+    border: none;
+    border-radius: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    transition: background 200ms ease;
+  }
+
+  .navbarMobileDrawer__cta:hover,
+  .navbarMobileDrawer__cta:active {
+    background: #ff6b3f;
+  }
+
+  .navbarMobileDrawer__cta svg {
+    flex-shrink: 0;
+  }
+}
