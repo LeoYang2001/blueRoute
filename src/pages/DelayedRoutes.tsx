@@ -16,30 +16,46 @@ export function DelayedRoutes({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const [displayLocation, setDisplayLocation] = useState(location);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  // Increments on every new transition so the overlay remounts and its
+  // strip animation replays from scratch — without this, rapid/double clicks
+  // reuse the existing overlay instance and framer-motion never replays.
+  const [transitionKey, setTransitionKey] = useState(0);
 
   useEffect(() => {
-    if (location.pathname !== displayLocation.pathname) {
-      setIsTransitioning(true);
-      const timer_1 = setTimeout(() => {
-        setDisplayLocation(location);
-        // Reset scroll to top when the displayed route changes
-        if (typeof window !== "undefined" && window.scrollTo) {
-          window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-        }
-      }, ROUTE_SWITCH_DELAY_MS);
-      const timer_2 = setTimeout(() => {
-        setIsTransitioning(false);
-      }, OVERLAY_HIDE_DELAY_MS);
-      return () => {
-        clearTimeout(timer_1);
-        clearTimeout(timer_2);
-      };
+    // If the latest navigation already matches what's on screen (e.g. user
+    // navigated back to the current page mid-transition), cancel the overlay
+    // instead of leaving isTransitioning stuck at true.
+    if (location.pathname === displayLocation.pathname) {
+      if (isTransitioning) setIsTransitioning(false);
+      return;
     }
+
+    setIsTransitioning(true);
+    setTransitionKey((k) => k + 1);
+
+    const timer_1 = setTimeout(() => {
+      setDisplayLocation(location);
+      // Reset scroll to top when the displayed route changes
+      if (typeof window !== "undefined" && window.scrollTo) {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
+    }, ROUTE_SWITCH_DELAY_MS);
+    const timer_2 = setTimeout(() => {
+      setIsTransitioning(false);
+    }, OVERLAY_HIDE_DELAY_MS);
+    return () => {
+      clearTimeout(timer_1);
+      clearTimeout(timer_2);
+    };
+    // We only react to location.pathname changes. displayLocation/isTransitioning
+    // are intentionally omitted: re-running when displayLocation updates would
+    // prematurely clear timer_2 and end the overlay before the slide-out plays.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   return (
     <>
-      {isTransitioning && <LoadingOverlay />}
+      {isTransitioning && <LoadingOverlay key={transitionKey} />}
       {/* The Routes tag MUST be here, wrapping the children */}
       <Routes location={displayLocation}>{children}</Routes>
     </>

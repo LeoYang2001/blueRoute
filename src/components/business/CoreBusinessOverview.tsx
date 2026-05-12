@@ -131,14 +131,14 @@ export default function CoreBusinessOverview() {
 
         <motion.img
           style={{ x: shipX }}
-          className="pointer-events-none absolute left-[52%] top-1/2 z-30 w-[min(190vw,2800px)] max-w-none -translate-x-1/2 -translate-y-1/2 select-none"
-          src="/ship/shipSvg.svg"
+          className="pointer-events-none absolute left-[52%] top-[33%] z-30 w-[min(180vw,2800px)] max-w-none -translate-x-1/2 -translate-y-1/2 select-none"
+          src="/ship/shipSvg1.svg"
           alt="Core Business Overview"
         />
         <motion.img
           style={{ x: ship2X }}
-          className="pointer-events-none absolute left-[52%] top-1/2 z-30 w-[min(190vw,2800px)] max-w-none -translate-x-1/2 -translate-y-1/2 select-none"
-          src="/ship/shipSvg.svg"
+          className="pointer-events-none absolute left-[52%] top-[33%] z-30 w-[min(180vw,2800px)] max-w-none -translate-x-1/2 -translate-y-1/2 select-none"
+          src="/ship/shipSvg2.svg"
           alt="Core Business Overview"
         />
       </div>

@@ -1,0 +1,128 @@
+<svg width="1345" height="470" viewBox="0 -55 1345 470" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- ======================== HULL (bow half) ======================== -->
+
+  <!-- Below-waterline shading -->
+  <path d="M 120 300 L 1345 300 L 1345 335 L 118 335 C 70 339, 28 326, 12 312 C 28 300, 70 298, 120 300 Z" fill="#E1E1E1"/>
+
+  <!-- Main hull body outline (truncated at midship) -->
+  <path d="M 175 158 L 320 158 L 320 190 L 1345 190 L 1345 335 L 118 335 C 70 339, 28 326, 12 312 C 28 290, 70 295, 120 295 C 135 258, 160 200, 175 158 Z" fill="#fff" stroke="#000" stroke-width="2"/>
+
+  <!-- Forecastle aft break -->
+  <line x1="320" y1="158" x2="320" y2="190" stroke="#000" stroke-width="2"/>
+
+  <!-- Sheer strake -->
+  <line x1="320" y1="202" x2="1345" y2="202" stroke="#CFCFCF" stroke-width="1"/>
+
+  <!-- Cargo tank division lines -->
+  <line x1="635" y1="202" x2="635" y2="295" stroke="#CFCFCF" stroke-width="1"/>
+  <line x1="950" y1="202" x2="950" y2="295" stroke="#CFCFCF" stroke-width="1"/>
+  <line x1="1265" y1="202" x2="1265" y2="295" stroke="#CFCFCF" stroke-width="1"/>
+
+  <!-- Waterline -->
+  <line x1="0" y1="300" x2="1345" y2="300" stroke="#000" stroke-width="1" stroke-dasharray="6 5"/>
+
+  <!-- Plimsoll mark (Load line disc) -->
+  <circle cx="1320" cy="248" r="13" fill="none" stroke="#000" stroke-width="1.5"/>
+  <line x1="1300" y1="248" x2="1340" y2="248" stroke="#000" stroke-width="1.5"/>
+
+  <!-- Draft marks at bow -->
+  <g stroke="#000" stroke-width="1.5">
+    <line x1="155" y1="225" x2="165" y2="225"/>
+    <line x1="155" y1="240" x2="165" y2="240"/>
+    <line x1="155" y1="255" x2="165" y2="255"/>
+    <line x1="155" y1="270" x2="165" y2="270"/>
+    <line x1="155" y1="285" x2="165" y2="285"/>
+  </g>
+
+  <!-- Hawse pipes -->
+  <circle cx="200" cy="220" r="7" fill="#E1E1E1" stroke="#000" stroke-width="1.5"/>
+  <circle cx="240" cy="225" r="7" fill="#E1E1E1" stroke="#000" stroke-width="1.5"/>
+
+  <!-- Stowed anchor -->
+  <path d="M 210 230 L 215 245 L 222 252 L 230 245 L 235 232 L 232 230 L 225 240 L 218 230 Z" fill="#CFCFCF" stroke="#000" stroke-width="1.5"/>
+  <line x1="222" y1="252" x2="222" y2="258" stroke="#000" stroke-width="1.5"/>
+
+  <!-- Bow bulwark cap line -->
+  <line x1="175" y1="158" x2="320" y2="158" stroke="#000" stroke-width="2"/>
+
+  <!-- ======================== FORECASTLE EQUIPMENT ======================== -->
+
+  <!-- Mooring winch / windlass -->
+  <rect x="208" y="148" width="34" height="10" fill="#fff" stroke="#000" stroke-width="1.5"/>
+  <rect x="212" y="142" width="6" height="6" fill="#fff" stroke="#000" stroke-width="1.2"/>
+  <rect x="232" y="142" width="6" height="6" fill="#fff" stroke="#000" stroke-width="1.2"/>
+
+  <!-- Capstans -->
+  <rect x="260" y="150" width="12" height="8" fill="#CFCFCF" stroke="#000" stroke-width="1.5"/>
+  <rect x="285" y="150" width="12" height="8" fill="#CFCFCF" stroke="#000" stroke-width="1.5"/>
+
+  <!-- Bow jackstaff -->
+  <line x1="180" y1="158" x2="180" y2="130" stroke="#000" stroke-width="1.5"/>
+  <circle cx="180" cy="128" r="2" fill="#000"/>
+
+  <!-- Foremast -->
+  <line x1="270" y1="158" x2="270" y2="55" stroke="#000" stroke-width="3"/>
+  <line x1="248" y1="105" x2="292" y2="105" stroke="#000" stroke-width="2"/>
+  <line x1="255" y1="78" x2="285" y2="78" stroke="#000" stroke-width="1.5"/>
+  <circle cx="270" cy="52" r="3" fill="#000"/>
+  <line x1="270" y1="105" x2="222" y2="158" stroke="#CFCFCF" stroke-width="1"/>
+  <line x1="270" y1="105" x2="316" y2="158" stroke="#CFCFCF" stroke-width="1"/>
+  <line x1="270" y1="78" x2="232" y2="158" stroke="#CFCFCF" stroke-width="1"/>
+  <line x1="270" y1="78" x2="308" y2="158" stroke="#CFCFCF" stroke-width="1"/>
+
+  <!-- Mooring fairleads -->
+  <rect x="180" y="153" width="10" height="5" fill="#E1E1E1" stroke="#000" stroke-width="1"/>
+  <rect x="305" y="153" width="10" height="5" fill="#E1E1E1" stroke="#000" stroke-width="1"/>
+
+  <!-- ======================== DECK ======================== -->
+
+  <!-- Deck piping -->
+  <line x1="335" y1="170" x2="1345" y2="170" stroke="#CFCFCF" stroke-width="2"/>
+  <line x1="335" y1="176" x2="1345" y2="176" stroke="#CFCFCF" stroke-width="2"/>
+  <line x1="335" y1="182" x2="1345" y2="182" stroke="#CFCFCF" stroke-width="2"/>
+
+  <!-- Pipe support saddles -->
+  <g fill="#fff" stroke="#000" stroke-width="1">
+    <rect x="450" y="184" width="6" height="6"/>
+    <rect x="650" y="184" width="6" height="6"/>
+    <rect x="850" y="184" width="6" height="6"/>
+    <rect x="1050" y="184" width="6" height="6"/>
+  </g>
+
+  <!-- Mushroom vents -->
+  <g fill="#fff" stroke="#000" stroke-width="1.5">
+    <rect x="400" y="180" width="3" height="10"/>
+    <rect x="403" y="178" width="8" height="3"/>
+    <rect x="500" y="180" width="3" height="10"/>
+    <rect x="503" y="178" width="8" height="3"/>
+    <rect x="720" y="180" width="3" height="10"/>
+    <rect x="723" y="178" width="8" height="3"/>
+    <rect x="820" y="180" width="3" height="10"/>
+    <rect x="823" y="178" width="8" height="3"/>
+    <rect x="1020" y="180" width="3" height="10"/>
+    <rect x="1023" y="178" width="8" height="3"/>
+    <rect x="1120" y="180" width="3" height="10"/>
+    <rect x="1123" y="178" width="8" height="3"/>
+  </g>
+
+  <!-- Tank dome hatches -->
+  <g fill="#fff" stroke="#000" stroke-width="1.5">
+    <circle cx="480" cy="188" r="4"/>
+    <circle cx="800" cy="188" r="4"/>
+    <circle cx="1100" cy="188" r="4"/>
+  </g>
+
+  <!-- Midship manifold (left half — continues in stern SVG) -->
+  <rect x="1305" y="155" width="10" height="35" fill="#CFCFCF" stroke="#000" stroke-width="1.5"/>
+  <rect x="1330" y="150" width="10" height="40" fill="#CFCFCF" stroke="#000" stroke-width="1.5"/>
+  <rect x="1290" y="138" width="55" height="6" fill="#fff" stroke="#000" stroke-width="2"/>
+  <line x1="1292" y1="144" x2="1292" y2="155" stroke="#000" stroke-width="1.5"/>
+  <line x1="1290" y1="138" x2="1290" y2="128" stroke="#000" stroke-width="1.5"/>
+  <line x1="1290" y1="128" x2="1345" y2="128" stroke="#000" stroke-width="1.5"/>
+  <line x1="1290" y1="133" x2="1345" y2="133" stroke="#CFCFCF" stroke-width="1"/>
+
+  <!-- Bulwark top railing -->
+  <line x1="320" y1="190" x2="1345" y2="190" stroke="#000" stroke-width="2"/>
+
+</svg>

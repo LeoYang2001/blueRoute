@@ -11,7 +11,7 @@ export default function Ship2D({ shipImgRef, bobOffset = 0 }: Ship2DProps) {
       ref={shipImgRef}
       src="/heroSection/cargo.png"
       alt="Cargo vessel"
-      className="absolute w-22.5 select-none pointer-events-none"
+      className="absolute w-42.5 select-none pointer-events-none"
       style={{ transform: `translateY(${bobOffset}px)` }}
       draggable={false}
     />

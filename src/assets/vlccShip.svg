@@ -1,4 +1,4 @@
-<svg width="2689" height="408" viewBox="0 0 2689 408" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="2689" height="470" viewBox="0 -55 2689 470" fill="none" xmlns="http://www.w3.org/2000/svg">
 
   <!-- ======================== HULL ======================== -->
 
@@ -289,12 +289,12 @@
   <rect x="2120" y="50" width="140" height="15" fill="#fff" stroke="#000" stroke-width="2"/>
 
   <!-- Radar masts and antennas -->
-  <line x1="2150" y1="50" x2="2150" y2="20" stroke="#000" stroke-width="2"/>
-  <line x1="2140" y1="35" x2="2160" y2="35" stroke="#000" stroke-width="1.5"/>
-  <line x1="2230" y1="50" x2="2230" y2="15" stroke="#000" stroke-width="2"/>
-  <ellipse cx="2230" cy="22" rx="14" ry="2" fill="#fff" stroke="#000" stroke-width="1.2"/>
-  <line x1="2190" y1="50" x2="2190" y2="32" stroke="#000" stroke-width="1.5"/>
-  <circle cx="2190" cy="30" r="2" fill="#000"/>
+  <line x1="2150" y1="50" x2="2150" y2="-10" stroke="#000" stroke-width="2"/>
+  <line x1="2140" y1="15" x2="2160" y2="15" stroke="#000" stroke-width="1.5"/>
+  <line x1="2230" y1="50" x2="2230" y2="-20" stroke="#000" stroke-width="2"/>
+  <ellipse cx="2230" cy="-12" rx="14" ry="2" fill="#fff" stroke="#000" stroke-width="1.2"/>
+  <line x1="2190" y1="50" x2="2190" y2="10" stroke="#000" stroke-width="1.5"/>
+  <circle cx="2190" cy="8" r="2" fill="#000"/>
 
   <!-- ======================== FUNNEL ======================== -->
 
@@ -313,9 +313,10 @@
   <rect x="2350" y="22" width="10" height="14" fill="#CFCFCF" stroke="#000" stroke-width="1.5"/>
 
   <!-- Aft mast on top of funnel -->
-  <line x1="2345" y1="35" x2="2345" y2="0" stroke="#000" stroke-width="2.5"/>
-  <line x1="2330" y1="14" x2="2360" y2="14" stroke="#000" stroke-width="1.5"/>
-  <circle cx="2345" cy="-2" r="3" fill="#000"/>
+  <line x1="2345" y1="35" x2="2345" y2="-35" stroke="#000" stroke-width="2.5"/>
+  <line x1="2330" y1="-15" x2="2360" y2="-15" stroke="#000" stroke-width="1.5"/>
+  <line x1="2335" y1="5" x2="2355" y2="5" stroke="#000" stroke-width="1.5"/>
+  <circle cx="2345" cy="-38" r="3" fill="#000"/>
 
   <!-- ======================== AFT DECK / POOP ======================== -->
 

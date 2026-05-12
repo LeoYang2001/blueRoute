@@ -21,9 +21,9 @@ export default function Navbar({ isCollapsed = false }: NavbarProps) {
           <span></span>
         </div>
 
-        <div className="w-full h-full" aria-label="BlueRoute logo">
+        <div className="navbarBrand" aria-label="BlueRoute logo">
           <img
-            className="  scale-170"
+            className="navbarBrandLogo"
             src="/logo/logo.png"
             alt="BlueRoute logo"
           />
