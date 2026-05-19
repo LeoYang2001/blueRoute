@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -34,19 +35,147 @@ const PILLARS = [
   },
 ];
 
-const SPECS = [
-  { label: "Propulsion", value: "Yuchai Marine 6S50ME" },
+// ── Featured vessel set ──
+// Each vessel renders into the same image+content layout; the selector
+// at the top of the section swaps between them. Images are placeholders
+// for now (image: "/pictures/ship_4.png") — to be replaced per vessel.
+//
+// Public AIS data (IMO/MMSI, dimensions, deadweight) for the three
+// Pacific-class sister tankers was sourced from VesselFinder and
+// MaritimeOptima in May 2026.
+type Vessel = {
+  id: string;
+  name: string;
+  subtitle: string;
+  image: string;
+  imageAlt: string;
+  badge: string;
+  headerMeta: string;
+  /** Short tagline shown above the spec sheet. */
+  tagline?: string;
+  specs: { label: string; value: string }[];
+};
+
+const VESSELS: Vessel[] = [
   {
-    label: "Engine Origin",
-    value: "China's first domestic large-scale chemical tanker engine",
+    id: "tian-shu-xing",
+    name: "Tian Shu Xing",
+    subtitle:
+      "MR Chemical / Oil Products Tanker · Lianyungang Wuzhou Shipbuilding",
+    image: "/pictures/ship_4.png",
+    imageAlt: "Tian Shu Xing chemical tanker",
+    badge: "Newly Delivered",
+    headerMeta: "Delivered · March 2025",
+    tagline:
+      "The largest chemical tanker ever built in Lianyungang, powered by China's first domestic large-scale chemical-tanker engine.",
+    specs: [
+      { label: "Delivery Date", value: "March 2025" },
+      { label: "Vessel Type", value: "Chemical / Oil Products Tanker (MR)" },
+      { label: "IMO Number", value: "1031513" },
+      { label: "Callsign", value: "VRWT3" },
+      { label: "Flag", value: "Hong Kong" },
+      { label: "Dimensions", value: "183 m LOA × 32 m beam" },
+      { label: "Deadweight", value: "49,994 t" },
+      { label: "Gross Tonnage", value: "29,999" },
+      { label: "Main Engine", value: "Yuchai Marine 6S50ME" },
+      {
+        label: "Shipbuilder",
+        value: "Lianyungang Wuzhou Shipbuilding Industry Co.",
+      },
+    ],
   },
-  { label: "Deadweight", value: "50,000 tons" },
-  { label: "Cargo Type", value: "Chemical Products" },
+  {
+    id: "pacific-explorer",
+    name: "Pacific Explorer",
+    subtitle:
+      "MR Chemical / Oil Products Tanker · Lianyungang Wuzhou Shipbuilding",
+    image: "/pictures/pacific-explorer.png",
+    imageAlt: "Pacific Explorer tanker",
+    badge: "Launched",
+    headerMeta: "Launched · Oct 23, 2025",
+    tagline:
+      "Hong Kong-flagged Medium Range tanker, sister to Pacific Pioneer and Pacific Horizon.",
+    specs: [
+      { label: "Launch Date", value: "October 23, 2025" },
+      { label: "Vessel Type", value: "Chemical / Oil Products Tanker (MR)" },
+      { label: "IMO Number", value: "1061855" },
+      { label: "Callsign", value: "VRXD9" },
+      { label: "Flag", value: "Hong Kong" },
+      { label: "Dimensions", value: "183 m LOA × 32 m beam" },
+      { label: "Deadweight", value: "49,997 t" },
+      { label: "Gross Tonnage", value: "29,999" },
+      { label: "Main Engine", value: "MAN 6S50ME-C9.7-HPSCR" },
+      {
+        label: "Shipbuilder",
+        value: "Lianyungang Wuzhou Shipping Industry Co., Ltd.",
+      },
+    ],
+  },
+  {
+    id: "pacific-pioneer",
+    name: "Pacific Pioneer",
+    subtitle:
+      "MR Chemical / Oil Products Tanker · Lianyungang Wuzhou Shipbuilding",
+    image: "/pictures/pacific-pioneer.png",
+    imageAlt: "Pacific Pioneer tanker",
+    badge: "Launched",
+    headerMeta: "Launched · Aug 02, 2025",
+    tagline:
+      "First of the Pacific-class MR sister set, in service since the 2025 launch.",
+    specs: [
+      { label: "Launch Date", value: "August 2, 2025" },
+      { label: "Vessel Type", value: "Chemical / Oil Products Tanker (MR)" },
+      { label: "IMO Number", value: "1046178" },
+      { label: "Callsign", value: "VRWY6" },
+      { label: "Flag", value: "Hong Kong" },
+      { label: "Dimensions", value: "182 m LOA × 32 m beam" },
+      { label: "Deadweight", value: "49,998 t" },
+      { label: "Gross Tonnage", value: "29,999" },
+      { label: "Main Engine", value: "MAN 6S50ME-C9.7-HPSCR" },
+      {
+        label: "Shipbuilder",
+        value: "Lianyungang Wuzhou Shipping Industry Co., Ltd.",
+      },
+    ],
+  },
+  {
+    id: "pacific-horizon",
+    name: "Pacific Horizon",
+    subtitle:
+      "MR Chemical / Oil Products Tanker · Lianyungang Wuzhou Shipbuilding",
+    image: "/pictures/pacific-horizon.png",
+    imageAlt: "Pacific Horizon tanker",
+    badge: "Launched",
+    headerMeta: "Launched · Jan 25, 2026",
+    tagline:
+      "The newest of the Pacific-class sisters, launched at the start of 2026.",
+    specs: [
+      { label: "Launch Date", value: "January 25, 2026" },
+      { label: "Vessel Type", value: "Chemical / Oil Products Tanker (MR)" },
+      { label: "IMO Number", value: "1062586" },
+      { label: "Callsign", value: "VRXJ2" },
+      { label: "Flag", value: "Hong Kong" },
+      { label: "Dimensions", value: "183 m LOA × 32 m beam" },
+      { label: "Deadweight", value: "49,995 t" },
+      { label: "Gross Tonnage", value: "29,999" },
+      { label: "Main Engine", value: "MAN 6S50ME-C9.7-HPSCR" },
+      {
+        label: "Shipbuilder",
+        value: "Lianyungang Wuzhou Shipping Industry Co., Ltd.",
+      },
+    ],
+  },
 ];
 
 const DELAY = 0.15;
 
 export default function FleetModernizationSection() {
+  // Index of the currently selected vessel for the featured-vessel block.
+  // Defaults to the first entry (Tian Shu Xing) for parity with the prior
+  // single-vessel layout.
+  const [activeVesselIdx, setActiveVesselIdx] = useState(0);
+  const activeVessel = VESSELS[activeVesselIdx];
+
   return (
     <section className="fleetSection fleetSection--modernization fleetModSection">
       <div className="fleetSection__inner fleetModSection__inner">
@@ -65,18 +194,12 @@ export default function FleetModernizationSection() {
           <motion.p className="fleetSection__eyebrow" {...fadeUp(0.08)}>
             Fleet Modernization &amp; Featured Assets
           </motion.p>
-          <motion.h2
-            className="fleetModSection__headline"
-            {...fadeUp(DELAY)}
-          >
+          <motion.h2 className="fleetModSection__headline" {...fadeUp(DELAY)}>
             Built for Performance.
             <br />
             Ready for Tomorrow.
           </motion.h2>
-          <motion.p
-            className="fleetModSection__sub"
-            {...fadeUp(DELAY + 0.12)}
-          >
+          <motion.p className="fleetModSection__sub" {...fadeUp(DELAY + 0.12)}>
             Our modernization strategy goes beyond adding vessels—it&apos;s
             about building smarter, cleaner, and more capable ships that lead
             the next generation of maritime energy transport.
@@ -87,10 +210,7 @@ export default function FleetModernizationSection() {
         <div className="fleetModBlock">
           <motion.header className="fleetModBlock__header" {...fadeUp(0)}>
             <span className="fleetModBlock__label">Strategy Pillars</span>
-            <span
-              className="fleetModBlock__divider"
-              aria-hidden="true"
-            />
+            <span className="fleetModBlock__divider" aria-hidden="true" />
             <span className="fleetModBlock__count">04 Priorities</span>
           </motion.header>
 
@@ -104,10 +224,7 @@ export default function FleetModernizationSection() {
                 {/* Decorative oversized index sitting in the card's
                     background — adds visual interest without crowding
                     the text content. Hidden from assistive tech. */}
-                <span
-                  className="fleetModPillar__indexBg"
-                  aria-hidden="true"
-                >
+                <span className="fleetModPillar__indexBg" aria-hidden="true">
                   {p.index}
                 </span>
                 <span className="fleetModPillar__index">{p.index}</span>
@@ -118,98 +235,106 @@ export default function FleetModernizationSection() {
           </div>
         </div>
 
-        {/* ─── Featured vessel ─── */}
+        {/* ─── Featured vessels ───
+            Tabbed selector lets visitors switch between 4 showcase vessels.
+            The image + content panel below the tabs is keyed on the active
+            vessel id so AnimatePresence can cross-fade between selections. */}
         <div className="fleetModBlock">
           <motion.header className="fleetModBlock__header" {...fadeUp(0)}>
-            <span className="fleetModBlock__label">Featured Vessel</span>
-            <span
-              className="fleetModBlock__divider"
-              aria-hidden="true"
-            />
+            <span className="fleetModBlock__label">Featured Vessels</span>
+            <span className="fleetModBlock__divider" aria-hidden="true" />
             <span className="fleetModBlock__count">
-              Delivered · March 2025
+              {activeVessel.headerMeta}
             </span>
           </motion.header>
 
-          <div className="fleetModFeatured">
+          {/* Vessel selector — accessible tab-list. Numeric prefix on each
+              tab keeps the visual rhythm of the rest of the page. */}
+          <motion.div
+            className="fleetModVesselTabs"
+            role="tablist"
+            aria-label="Featured vessels"
+            {...fadeUp(DELAY)}
+          >
+            {VESSELS.map((v, i) => {
+              const isActive = i === activeVesselIdx;
+              return (
+                <button
+                  key={v.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`vessel-panel-${v.id}`}
+                  id={`vessel-tab-${v.id}`}
+                  className={`fleetModVesselTab${
+                    isActive ? " fleetModVesselTab--active" : ""
+                  }`}
+                  onClick={() => setActiveVesselIdx(i)}
+                >
+                  <span className="fleetModVesselTab__num">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="fleetModVesselTab__name">{v.name}</span>
+                </button>
+              );
+            })}
+          </motion.div>
+
+          <AnimatePresence mode="wait">
             <motion.div
-              className="fleetModFeatured__image"
-              {...fadeUp(DELAY + 0.1)}
+              key={activeVessel.id}
+              id={`vessel-panel-${activeVessel.id}`}
+              role="tabpanel"
+              aria-labelledby={`vessel-tab-${activeVessel.id}`}
+              className="fleetModFeatured"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{
+                duration: 0.45,
+                ease: [0.16, 1, 0.3, 1] as const,
+              }}
             >
-              <img
-                src="/pictures/ship_4.png"
-                alt="Tian Shu Xing chemical tanker"
-              />
-              <motion.span
-                className="fleetModFeatured__badge"
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{
-                  duration: 0.5,
-                  delay: DELAY + 0.4,
-                  ease: "easeOut",
-                }}
-              >
-                <span className="fleetModFeatured__badgeDot" aria-hidden="true" />
-                Newly Delivered
-              </motion.span>
+              <div className="fleetModFeatured__image">
+                <img src={activeVessel.image} alt={activeVessel.imageAlt} />
+                <span className="fleetModFeatured__badge">
+                  <span
+                    className="fleetModFeatured__badgeDot"
+                    aria-hidden="true"
+                  />
+                  {activeVessel.badge}
+                </span>
+              </div>
+
+              <div className="fleetModFeatured__content">
+                <h3 className="fleetModFeatured__name">{activeVessel.name}</h3>
+                <p className="fleetModFeatured__subtitle">
+                  {activeVessel.subtitle}
+                </p>
+
+                {activeVessel.tagline && (
+                  <p className="fleetModFeatured__tagline">
+                    {activeVessel.tagline}
+                  </p>
+                )}
+
+                <dl className="fleetModFeatured__specs">
+                  {activeVessel.specs.map((s) => (
+                    <div key={s.label} className="fleetModFeatured__spec">
+                      <dt className="fleetModFeatured__specLabel">{s.label}</dt>
+                      {/* Dotted leader between label and value — editorial
+                          spec-sheet feel. */}
+                      <span
+                        className="fleetModFeatured__specLeader"
+                        aria-hidden="true"
+                      />
+                      <dd className="fleetModFeatured__specValue">{s.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
             </motion.div>
-
-            <div className="fleetModFeatured__content">
-              <motion.h3
-                className="fleetModFeatured__name"
-                {...fadeUp(DELAY + 0.2)}
-              >
-                Tian Shu Xing
-              </motion.h3>
-              <motion.p
-                className="fleetModFeatured__subtitle"
-                {...fadeUp(DELAY + 0.28)}
-              >
-                50,000-ton Chemical Tanker · Lianyungang Wuzhou Shipbuilding
-              </motion.p>
-              <motion.p
-                className="fleetModFeatured__desc"
-                {...fadeUp(DELAY + 0.36)}
-              >
-                The largest chemical tanker ever built in Lianyungang,{" "}
-                <em>Tian Shu Xing</em> represents the pinnacle of the
-                company&apos;s fleet investment. Designed for premium
-                chemical cargo, it sets a new benchmark for vessel scale and
-                capability from China&apos;s coastal shipbuilding industry.
-              </motion.p>
-
-              <motion.dl
-                className="fleetModFeatured__specs"
-                {...fadeUp(DELAY + 0.44)}
-              >
-                {SPECS.map((s, i) => (
-                  <motion.div
-                    key={s.label}
-                    className="fleetModFeatured__spec"
-                    initial={{ opacity: 0, x: -12 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.2 }}
-                    transition={{
-                      duration: 0.45,
-                      delay: DELAY + 0.5 + i * 0.07,
-                      ease: "easeOut",
-                    }}
-                  >
-                    <dt className="fleetModFeatured__specLabel">{s.label}</dt>
-                    {/* Dotted leader between label and value — editorial
-                        spec-sheet feel. */}
-                    <span
-                      className="fleetModFeatured__specLeader"
-                      aria-hidden="true"
-                    />
-                    <dd className="fleetModFeatured__specValue">{s.value}</dd>
-                  </motion.div>
-                ))}
-              </motion.dl>
-            </div>
-          </div>
+          </AnimatePresence>
         </div>
       </div>
     </section>

@@ -181,59 +181,83 @@
 }
 
 /* ── Hero mobile reflow ──
-   The desktop hero has two absolutely-positioned blocks (headline bottom-left,
-   side text bottom-right) that overlap on a phone. On mobile we move them into
-   a single flow column anchored to the bottom of the hero, shrink the type, and
-   hide the decorative "scroll to discover" hint to free up vertical room. */
+   The desktop hero uses two absolutely-positioned blocks (headline bottom-left,
+   side text bottom-right) that anchor to opposite corners of the viewport.
+   On a phone those two blocks compete for the same vertical band and overlap
+   on short viewports.
+
+   On mobile we instead flip the overlay wrapper from bottom-anchored to a
+   top-anchored vertical stack. The headline block (eyebrow + H1 + investors)
+   sits just under the navbar, followed by the supporting paragraph. The
+   animated ship in HeroScene stays bottom-center and now has the entire
+   lower half of the viewport to itself. The decorative "scroll to discover"
+   hint is dropped — it adds clutter and was the only piece relying on the
+   side text being at the bottom. */
 @media (max-width: 768px) {
-  .hero__headlineBlock {
-    position: absolute;
-    left: 1.25rem;
-    right: 1.25rem;
-    bottom: 5.5rem;
-    max-width: none;
+  /* Flip the text overlay wrapper from justify-end (Tailwind: bottom-aligned)
+     to a top-aligned column, with breathing room above for the navbar and
+     a consistent gap between the two text blocks.
+     The `.z-30` qualifier scopes this to the text overlay only — without it
+     the selector also matches the sibling `.heroScene` (same flex/justify
+     classes), which would push the animated ship away from the bottom and
+     off the wake. */
+  .hero > .z-30.flex.flex-col.justify-end {
+    justify-content: flex-start;
+    padding: 5.25rem 1.25rem 1.25rem;
+    gap: 1.5rem;
   }
 
-  .hero__headlineBlock h1 {
-    font-size: clamp(2rem, 9vw, 3rem);
-    line-height: 1;
-    margin-bottom: 20px;
+  /* Both text blocks switch from absolute to in-flow so they stack
+     naturally in the column above. */
+  .hero__headlineBlock,
+  .hero__sideText {
+    position: static;
+    inset: auto;
+    max-width: none;
+    width: 100%;
   }
 
   .hero__eyebrow {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     letter-spacing: 0.18em;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
-  .hero__logos {
+  .hero__headlineBlock h1 {
+    font-size: clamp(2rem, 8.5vw, 2.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    margin-bottom: 18px;
+  }
+
+  /* Investors row: tighten gap and shrink chips so the row fits one line
+     on most phones (and wraps gracefully on the smallest). */
+  .hero__investors {
     gap: 8px;
   }
 
-  .hero__logos div {
-    padding: 5px 10px;
-    font-size: 0.74rem;
-  }
-
   .hero__investorsLabel {
-    font-size: 0.62rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
   }
 
-  /* Drop the bottom-right side text into a stacked block above the headline
-     — pinning it bottom-right collides with the headline at small widths. */
-  .hero__sideText {
-    position: absolute;
-    left: 1.25rem;
-    right: 1.25rem;
-    bottom: auto;
-    top: 6rem;
-    max-width: none;
+  .hero__logos {
+    gap: 6px;
   }
 
+  .hero__logos div {
+    padding: 4px 10px;
+    font-size: 0.72rem;
+  }
+
+  /* Supporting paragraph sits directly below the headline block. Slightly
+     lower opacity and tighter type so it reads as secondary copy and
+     doesn't compete with the H1. */
   .hero__sideText p {
-    font-size: 0.9rem;
+    font-size: 0.86rem;
     line-height: 1.5;
     margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.68);
   }
 
   .hero__scrollHint {

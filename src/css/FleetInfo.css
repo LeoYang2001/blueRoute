@@ -666,6 +666,88 @@
   line-height: 1.6;
 }
 
+/* ── Featured vessel selector ──
+   Horizontal tab strip above the featured vessel panel. Lets visitors
+   switch between the showcase vessels. Each tab is a numbered chip with
+   a label; the active tab gets the orange accent line and a brighter
+   label. The strip wraps to multiple lines on narrow viewports. */
+.fleetModVesselTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fleetModVesselTab {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 160px;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.95rem 1.1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.55);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    transform 220ms ease;
+}
+
+/* Animated orange accent at the top of each tab — same idiom as the
+   strategy pillars. Sits at scale(0) until active or hovered. */
+.fleetModVesselTab::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff5c2f 0%, rgba(255, 92, 47, 0.16) 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 260ms ease;
+}
+
+.fleetModVesselTab:hover {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: rgba(255, 92, 47, 0.22);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.fleetModVesselTab:hover::before {
+  transform: scaleX(0.6);
+}
+
+.fleetModVesselTab--active {
+  background: rgba(255, 92, 47, 0.08);
+  border-color: rgba(255, 92, 47, 0.5);
+  color: #fff;
+}
+
+.fleetModVesselTab--active::before {
+  transform: scaleX(1);
+}
+
+.fleetModVesselTab__num {
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 92, 47, 0.85);
+  flex-shrink: 0;
+}
+
+.fleetModVesselTab__name {
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
 /* ── Featured vessel ── */
 
 .fleetModFeatured {
@@ -674,7 +756,6 @@
   gap: 4rem;
   align-items: center;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .fleetModFeatured__image {
@@ -776,6 +857,18 @@
   font-style: normal;
   font-weight: 500;
 }
+
+/* Short tagline rendered between the subtitle and the spec sheet. Kept
+   intentionally compact (one or two lines) so the spec list is still
+   the main attraction. */
+.fleetModFeatured__tagline {
+  margin: 0 0 1.4rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  max-width: 52ch;
+}
+
 
 /* Spec sheet — editorial-style leader-dot layout. The leader is a flex
    item that consumes the space between label and value with a dotted
@@ -1041,6 +1134,29 @@
     font-size: 4rem;
     top: 0.25rem;
     right: 0.5rem;
+  }
+
+  /* Vessel tab strip: 2-up grid on phones so 4 vessels fit in two rows
+     without horizontal cramping. Each tab still keeps its number+label. */
+  .fleetModVesselTabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+  }
+
+  .fleetModVesselTab {
+    min-width: 0;
+    padding: 0.7rem 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .fleetModVesselTab__num {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+  }
+
+  .fleetModVesselTab__name {
+    font-size: 0.82rem;
   }
 
   .fleetModFeatured {
