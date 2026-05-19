@@ -183,9 +183,11 @@ export default function ShippingServices() {
   useEffect(() => {
     let cancelled = false;
 
-    fetch(
-      "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson",
-    )
+    // World GeoJSON is served from our own `public/` so the page works in
+    // mainland China (raw.githubusercontent.com is slow or blocked behind
+    // the GFW). The file ships with the build at the URL `/world.geojson`,
+    // resolved against the deploy origin — no external request.
+    fetch("/world.geojson")
       .then((res) => res.json())
       .then((data: GeoFeatureCollection) => {
         if (!cancelled) setWorldData(data);
@@ -604,7 +606,16 @@ export default function ShippingServices() {
             empty-looking 344px. */}
         <div
           ref={globeHostRef}
-          className="relative h-96 w-full overflow-visible md:h-150 md:col-start-2 md:row-span-2 md:row-start-1"
+          // `pointer-events-none` is critical on mobile: the Three.js canvas
+          // inside react-globe.gl has default `pointer-events: auto`, and the
+          // `scale-[1.5]` transform below visually expands it upward over the
+          // controls. With pointer-events enabled, the canvas would intercept
+          // every tap and scroll gesture (the `enablePointerInteraction={false}`
+          // prop only disables react-globe.gl's internal raycasting — it does
+          // *not* set CSS pointer-events on the canvas DOM node). The globe is
+          // purely a visualization here, so we tell the whole subtree to
+          // ignore pointer input.
+          className="pointer-events-none relative h-96 w-full overflow-visible md:h-150 md:col-start-2 md:row-span-2 md:row-start-1"
         >
           <div className="absolute inset-0 flex items-center justify-center">
             {/* Mobile scales the globe up considerably (1.5×) — the canvas

@@ -27,6 +27,22 @@ export default function EnvironmentalStewardship() {
   return (
     <section className="safetyEnvSection">
       <div className="safetyEnvSection__inner">
+        {/* Mobile-only chapter marker. */}
+        <motion.div
+          className="safetyEnvSection__chapter md:hidden"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <span className="safetyEnvSection__chapterNum">03</span>
+          <span
+            className="safetyEnvSection__chapterRule"
+            aria-hidden="true"
+          />
+          <span className="safetyEnvSection__chapterLabel">Environment</span>
+        </motion.div>
+
         <motion.p
           className="safetyEnvSection__eyebrow"
           initial={{ opacity: 0, y: 14 }}

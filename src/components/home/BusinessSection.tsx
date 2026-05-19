@@ -119,14 +119,14 @@ export default function BusinessSection() {
                 ease: [0.16, 1, 0.3, 1],
                 delay: 0.1,
               }}
-              src="/pictures/ship_2.png"
+              src="/business/business_1.png"
               alt="Global chartering and maritime operations"
               className="w-full h-48 object-cover scale-110 md:h-[330px]"
             />
           ) : (
             <motion.img
               style={{ y: yImageFast }}
-              src="/pictures/ship_2.png"
+              src="/business/business_1.png"
               alt="Global chartering and maritime operations"
               className="w-full h-48 object-cover scale-110 md:h-[330px]"
             />
@@ -235,14 +235,14 @@ export default function BusinessSection() {
                   duration: 0.75,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                src="/pictures/ship_1.png"
+                src="/pictures/factory.png"
                 alt="Integrated maritime solutions"
                 className="w-full h-52 object-cover scale-110 md:h-[360px]"
               />
             ) : (
               <motion.img
                 style={{ y: yImageSlow }}
-                src="/pictures/ship_1.png"
+                src="/pictures/factory.png"
                 alt="Integrated maritime solutions"
                 className="w-full h-52 object-cover scale-110 md:h-[360px]"
               />

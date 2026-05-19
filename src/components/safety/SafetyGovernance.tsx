@@ -185,6 +185,24 @@ export default function SafetyGovernance() {
   return (
     <section className="safetyGovSection">
       <div className="safetyGovSection__inner">
+        {/* Mobile-only chapter marker — matches the editorial rhythm used
+            on the Home and Business pages. Hidden on desktop so the
+            laptop layout stays untouched. */}
+        <motion.div
+          className="safetyGovSection__chapter md:hidden"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <span className="safetyGovSection__chapterNum">01</span>
+          <span
+            className="safetyGovSection__chapterRule"
+            aria-hidden="true"
+          />
+          <span className="safetyGovSection__chapterLabel">Governance</span>
+        </motion.div>
+
         <motion.p
           className="safetyGovSection__eyebrow"
           initial={{ opacity: 0, y: 14 }}

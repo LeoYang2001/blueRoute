@@ -49,6 +49,22 @@ export default function SafetyPerformanceReliability() {
   return (
     <section className="safetyPerfSection">
       <div className="safetyPerfSection__inner">
+        {/* Mobile-only chapter marker. */}
+        <motion.div
+          className="safetyPerfSection__chapter md:hidden"
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <span className="safetyPerfSection__chapterNum">02</span>
+          <span
+            className="safetyPerfSection__chapterRule"
+            aria-hidden="true"
+          />
+          <span className="safetyPerfSection__chapterLabel">Performance</span>
+        </motion.div>
+
         <motion.p
           className="safetyPerfSection__eyebrow"
           initial={{ opacity: 0, y: 14 }}

@@ -58,7 +58,7 @@ export default function FleetOverviewSection() {
             viewport={{ once: true, amount: 0.35 }}
             transition={{ duration: 0.8, delay: NON_HEADLINE_DELAY + 0.16 }}
           >
-            <img src="/pictures/ship_3.png" alt="Modern tanker fleet" />
+            <img src="/pictures/shore.png" alt="Modern tanker fleet" />
           </motion.figure>
         </motion.div>
 

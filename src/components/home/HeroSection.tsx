@@ -85,7 +85,7 @@ export default function HeroSection() {
               A fast-growing international shipping group
             </span>
 
-            <div className="hero__logos">
+            <div className="hero__logos text-white opacity-90">
               <div>20 Vessels</div>
               <div>3.3M DWT</div>
               <div>Global Routes</div>

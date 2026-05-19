@@ -450,10 +450,51 @@
   }
 }
 
+/* ── Chapter markers (mobile-only TSX, styled here) ──
+   Shared visual treatment for the three section anchors: "01 — Governance",
+   "02 — Performance", "03 — Environment". Same rhythm as the chapter
+   markers used on the Home and Business pages. */
+.safetyGovSection__chapter,
+.safetyPerfSection__chapter,
+.safetyEnvSection__chapter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.4rem;
+}
+
+.safetyGovSection__chapterNum,
+.safetyPerfSection__chapterNum,
+.safetyEnvSection__chapterNum {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #ff5c2f;
+}
+
+.safetyGovSection__chapterRule,
+.safetyPerfSection__chapterRule,
+.safetyEnvSection__chapterRule {
+  display: block;
+  width: 1.6rem;
+  height: 1px;
+  background: rgba(255, 92, 47, 0.5);
+}
+
+.safetyGovSection__chapterLabel,
+.safetyPerfSection__chapterLabel,
+.safetyEnvSection__chapterLabel {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(17, 19, 24, 0.55);
+}
+
 /* ── Mobile-tight breakpoint (≤768px) ──
    The existing 920px rules cover tablet sizing. These additions handle
    true phone widths: shrink heavy vertical padding, drop heading sizes,
-   and reduce safety governance card heights so the grid feels right. */
+   reduce safety governance card heights, refine the performance stat
+   stack, and tidy environmental pillar cards. */
 @media (max-width: 768px) {
   .fleetSection {
     padding: 4rem 1.25rem;
@@ -466,72 +507,193 @@
     line-height: 1;
   }
 
+  /* ── Safety Governance ── */
   .safetyGovSection {
-    padding: 5rem 1.25rem 4rem;
+    padding: 4rem 1.25rem 3.5rem;
+  }
+
+  .safetyGovSection__chapter {
+    margin-bottom: 1rem;
+  }
+
+  .safetyGovSection__eyebrow {
+    margin-bottom: 1rem;
+    font-size: 0.68rem;
   }
 
   .safetyGovSection__title {
-    margin-bottom: 2.5rem;
+    font-size: clamp(2.4rem, 9vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 2.2rem;
   }
 
   .safetyGovSection__copy {
-    gap: 1.6rem;
+    gap: 1.4rem;
   }
 
-  .safetyGovSection__cards {
-    margin-top: 2.5rem;
-    gap: 0.75rem;
+  .safetyGovSection__lead {
+    font-size: 1.4rem;
   }
 
-  .safetyGovSection__card {
-    padding: 1.4rem 1.25rem;
-    min-height: 0;
-  }
-
-  .safetyGovSection__cardIcon {
-    width: 2.8rem;
-    height: 2.8rem;
-  }
-
-  .safetyGovSection__cardTitle {
-    font-size: 1.5rem;
-  }
-
-  .safetyPerfSection {
-    padding: 5rem 1.25rem;
-  }
-
-  .safetyPerfSection__title {
-    margin-bottom: 3rem;
-  }
-
-  .safetyPerfSection__stats {
-    margin-bottom: 3rem;
-  }
-
-  .safetyPerfSection__stat {
-    padding: 1.5rem 1.25rem 1.75rem;
-  }
-
-  .safetyPerfSection__statValue {
-    font-size: clamp(3.2rem, 14vw, 5rem);
-  }
-
-  .safetyPerfSection__body {
+  .safetyGovSection__body {
     font-size: 1.2rem;
     line-height: 1.34;
   }
 
+  .safetyGovSection__cards {
+    margin-top: 2.2rem;
+    gap: 0.7rem;
+  }
+
+  /* Card layout on mobile: header (index + icon) compact, content sits
+     directly under, body always visible (no hover-reveal). Bottom orange
+     accent expanded slightly so it's visible on touch devices. */
+  .safetyGovSection__card {
+    padding: 1.25rem 1.2rem 1.3rem;
+    min-height: 0;
+  }
+
+  .safetyGovSection__card::after {
+    transform: scaleX(0.5);
+  }
+
+  .safetyGovSection__cardHeader {
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .safetyGovSection__cardIndex {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+  }
+
+  .safetyGovSection__cardIcon {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .safetyGovSection__cardContent {
+    margin-top: 1rem;
+    gap: 0.55rem;
+  }
+
+  .safetyGovSection__cardTitle {
+    font-size: 1.25rem;
+    line-height: 1.1;
+    max-width: none;
+  }
+
+  .safetyGovSection__cardBody {
+    font-size: 0.86rem;
+    line-height: 1.55;
+    opacity: 1;
+    transform: none;
+    max-height: none;
+    max-width: none;
+  }
+
+  /* ── Safety Performance ── */
+  .safetyPerfSection {
+    padding: 4rem 1.25rem 3.5rem;
+  }
+
+  .safetyPerfSection__chapter {
+    margin-bottom: 1rem;
+  }
+
+  .safetyPerfSection__eyebrow {
+    margin-bottom: 1rem;
+    font-size: 0.68rem;
+  }
+
+  .safetyPerfSection__title {
+    font-size: clamp(2.4rem, 9vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Stack the three count-down stats vertically. Use a more compact
+     padding and a subtle border separator on each card so the trio
+     reads as a single composed block rather than three loose pieces. */
+  .safetyPerfSection__stats {
+    grid-template-columns: 1fr;
+    gap: 1px;
+    margin-bottom: 2.5rem;
+  }
+
+  .safetyPerfSection__stat {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding: 1.6rem 1.25rem;
+  }
+
+  .safetyPerfSection__statValue {
+    font-size: clamp(3rem, 16vw, 4.8rem);
+    letter-spacing: -0.04em;
+  }
+
+  .safetyPerfSection__statLabel {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+  }
+
+  .safetyPerfSection__body {
+    font-size: 1.15rem;
+    line-height: 1.36;
+  }
+
+  /* ── Environmental Stewardship ── */
   .safetyEnvSection {
-    padding: 5rem 1.25rem 4rem;
+    padding: 4rem 1.25rem 3.5rem;
+  }
+
+  .safetyEnvSection__chapter {
+    margin-bottom: 1rem;
+  }
+
+  .safetyEnvSection__eyebrow {
+    margin-bottom: 1rem;
+    font-size: 0.68rem;
+  }
+
+  .safetyEnvSection__title {
+    font-size: clamp(2.4rem, 9vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
   }
 
   .safetyEnvSection__intro {
-    margin-bottom: 2.5rem;
-    font-size: 0.96rem;
+    margin-bottom: 2.2rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .safetyEnvSection__pillars {
+    gap: 0.7rem;
   }
 
   .safetyEnvSection__pillar {
-    padding: 1.25rem 1.1rem 1.4rem;
+    padding: 1.2rem 1.1rem 1.3rem;
+    border-top-width: 2px;
+  }
+
+  .safetyEnvSection__pillarIndex {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+  }
+
+  .safetyEnvSection__pillarTitle {
+    font-size: 1.05rem;
+    margin-top: 0.15rem;
+  }
+
+  .safetyEnvSection__pillarBody {
+    font-size: 0.86rem;
+    line-height: 1.55;
   }
 }

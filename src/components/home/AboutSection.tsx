@@ -97,7 +97,7 @@ export default function AboutSection() {
           className="md:col-span-4 md:col-start-9 md:-mt-20"
         >
           <img
-            src="/pictures/ship_3.png"
+            src="/home/company-1.jpeg"
             alt="Oil tanker at sea"
             className="w-full h-56 object-cover transition-all duration-700 md:h-[520px]"
           />
@@ -112,7 +112,7 @@ export default function AboutSection() {
           className="md:col-span-4 md:col-start-3"
         >
           <img
-            src="/pictures/factory.png"
+            src="/pictures/ship_1.png"
             className="w-full h-48 object-cover md:h-[380px]"
           />
         </motion.div>

@@ -21,7 +21,7 @@ const MILESTONES: Milestone[] = [
     title: "Fleet Foundation",
     description:
       "The fleet journey began with a single 46,000-ton MR tanker, establishing an early operating base in maritime energy transportation.",
-    image: "/pictures/ship_1.png",
+    image: "/business/business_1.png",
   },
   {
     period: "2020–2024",
@@ -29,7 +29,7 @@ const MILESTONES: Milestone[] = [
     title: "Scale-Up Phase",
     description:
       "From that initial vessel, operations expanded steadily into a broader fleet serving crude oil, refined products, LNG, and fuel oil across a growing global route network.",
-    image: "/pictures/ship_3.png",
+    image: "/pictures/ship_6.png",
   },
   {
     period: "2025",
@@ -69,7 +69,7 @@ const MILESTONES: Milestone[] = [
     title: "Bulk Carrier Expansion",
     description:
       "Negotiations for Guinea mineral transport contracts are underway, with plans to acquire or build 5–10 Cape-size bulk carriers and explore LNG/LPG fleet development.",
-    image: "/pictures/shore.png",
+    image: "/home/company-1.jpeg",
   },
 ];
 
